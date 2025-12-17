@@ -14,32 +14,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Go to project directory
-      - name: Go to project directory
-        run: cd frontend
-
-      # 3. Setup Node.js
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '20'
           cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
 
-      # 4. Install dependencies
+      # 3. Install dependencies
       - name: Install dependencies
+        working-directory: frontend
         run: npm ci
 
-      # 5. Build Vue project
+      # 4. Build Vue project
       - name: Build project
+        working-directory: frontend
         run: npm run build
 
-      # 6. Deploy via SSH (rsync)
+      # 5. Deploy via SSH
       - name: Deploy to server
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
-          # key: ${{ secrets.SERVER_SSH_KEY }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-            rsync -avz --delete ./dist/ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/home/inzynierka/www
+            rsync -avz --delete /home/runner/work/***-front/***-front/frontend/dist/ /home/inzynierka/www/
