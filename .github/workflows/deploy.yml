@@ -32,13 +32,14 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      # 5. Deploy via SSH
+      # 5. Deploy via SCP
       - name: Deploy to server
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: ${{ secrets.SERVER_PORT }}
-          script: |
-            rsync -avz --delete /home/runner/work/***-front/***-front/frontend/dist/ /home/inzynierka/www/
+          source: "frontend/dist/*"
+          target: "/home/inzynierka/www"
+          strip_components: 2
