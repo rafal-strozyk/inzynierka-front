@@ -34,7 +34,7 @@ jobs:
 
       # 5. Deploy via rsync
       - name: Deploy to server using rsync
-        uses: burnett01/rsync-deployments@v4
+        uses: burnett01/rsync-deployments@v8
         with:
           switches: -avz --delete
           path: frontend/dist/
