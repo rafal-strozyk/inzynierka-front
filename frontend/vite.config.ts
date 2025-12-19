@@ -22,7 +22,7 @@ function renameIndexPluigin(newFilename: string | undefined): PluginOption {
 export default defineConfig({
   plugins: [
     vue(),
-    renameIndexPluigin("../resources/views/frontend/index.blade.php"),
+    renameIndexPluigin("./resources/views/frontend/index.blade.php"),
     vueDevTools(),
   ],
   resolve: {
