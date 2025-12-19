@@ -25,9 +25,16 @@ export default defineConfig({
     renameIndexPluigin("./resources/views/frontend/index.blade.php"),
     vueDevTools(),
   ],
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+
+  build: {
+    emptyOutDir: false,
+    manifest: true,
+    assetsDir: "./public/assets"
+  }
 })
