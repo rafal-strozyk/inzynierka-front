@@ -22,7 +22,7 @@ function renameIndexPluigin(newFilename: string | undefined): PluginOption {
 export default defineConfig({
   plugins: [
     vue(),
-    renameIndexPluigin("./resources/views/frontend/index.blade.php"),
+    renameIndexPluigin("../resources/views/frontend/index.blade.php"),
     vueDevTools(),
   ],
 
@@ -33,8 +33,9 @@ export default defineConfig({
   },
 
   build: {
+    outDir: './dist/public',
     emptyOutDir: false,
+    assetsDir: "./assets",
     manifest: true,
-    assetsDir: "./public/assets"
   }
 })
