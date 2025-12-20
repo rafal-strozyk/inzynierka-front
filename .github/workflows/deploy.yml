@@ -36,7 +36,7 @@ jobs:
       - name: Deploy to server using rsync
         uses: burnett01/rsync-deployments@v8
         with:
-          switches: -avz --delete
+          switches: -avz
           path: frontend/dist/
           remote_path: /home/inzynierka/www
           remote_host: ${{ secrets.SERVER_HOST }}
