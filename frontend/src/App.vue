@@ -1,12 +1,14 @@
-<script setup lang="ts"></script>
-
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
-  <p>Co się gapisz parówo dęta</p>
+  <router-view />
 </template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import catchAxiosError from '@/helpers/catch-axios-error.ts'
+
+onMounted(async () => {
+  const response = await catchAxiosError(window.API.get('/docs'))
+})
+</script>
 
 <style scoped></style>

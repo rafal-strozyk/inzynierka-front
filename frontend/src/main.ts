@@ -1,12 +1,23 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from "vue";
+import { createPinia } from "pinia";
 
-import App from './App.vue'
-import router from './router'
+import App from "./App.vue";
+import router from "./router";
+import API from "@/helpers/api-helper";
 
-const app = createApp(App)
+import "@/styles/styles.scss";
+import "@/styles/tailwind.css";
 
-app.use(createPinia())
-app.use(router)
+declare global {
+  interface Window {
+    API: typeof API;
+  }
+}
+window.API = API || {};
 
-app.mount('#app')
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount("#app");

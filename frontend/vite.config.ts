@@ -1,11 +1,12 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import {defineConfig, PluginOption} from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
+import { defineConfig, loadEnv, PluginOption } from "vite";
+import vue from "@vitejs/plugin-vue";
+import vueDevTools from "vite-plugin-vue-devtools";
+import tailwindcss from "@tailwindcss/vite";
 
-function renameIndexPluigin(newFilename: string | undefined): PluginOption {
-  if( !newFilename ) {
+function renameIndexPlugin(newFilename: string | undefined): PluginOption {
+  if (!newFilename) {
     return false;
   }
   return {
@@ -13,29 +14,44 @@ function renameIndexPluigin(newFilename: string | undefined): PluginOption {
     enforce: "post",
     generateBundle(_, bundle) {
       const indexHtml = bundle["index.html"];
-      indexHtml.fileName = newFilename
-    }
-  }
+      indexHtml.fileName = newFilename;
+    },
+  };
 }
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [
-    vue(),
-    renameIndexPluigin("../resources/views/frontend/index.blade.php"),
-    vueDevTools(),
-  ],
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+  return {
+    plugins: [
+      vue(),
+      vueDevTools(),
+      tailwindcss(),
+      renameIndexPlugin("../resources/views/frontend/index.blade.php"),
+    ],
 
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
     },
-  },
 
-  build: {
-    outDir: './dist/public',
-    emptyOutDir: false,
-    assetsDir: "./assets",
-    manifest: true,
-  }
-})
+    build: {
+      outDir: "./dist/public",
+      emptyOutDir: false,
+      assetsDir: "./assets",
+      manifest: true,
+    },
+
+    server: {
+      host: true,
+      proxy: {
+        "/api": {
+          target: env.API_BASE_URL,
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  };
+});
