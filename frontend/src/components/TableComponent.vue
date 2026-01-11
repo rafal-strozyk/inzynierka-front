@@ -116,7 +116,9 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
             <tr>
-              <th v-for="column in columns" scope="col" class="px-4 py-3">{{ column.text }}</th>
+              <th v-for="(column, index) in columns" :key="index" scope="col" class="px-4 py-3">
+                {{ column.text }}
+              </th>
               <th scope="col" class="px-4 py-3">
                 <span class="sr-only">Actions</span>
               </th>
@@ -134,7 +136,7 @@
               >
                 {{ row.id }}
               </th>
-              <td v-for="column in filteredColumns" class="px-4 py-3">
+              <td v-for="(column, index) in filteredColumns" :key="index" class="px-4 py-3">
                 {{ row[column.label] }}
               </td>
               <td class="px-4 py-3">

@@ -9,7 +9,7 @@ const router = createRouter({
 
 const websiteTitle = import.meta.env.VITE_BASE_TITLE;
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
   document.title = `${websiteTitle}${to.name ? ` - ${String(to.name)}` : ""}`;
   const [, error] = await catchAxiosError(window.API.get("/me"));
 
