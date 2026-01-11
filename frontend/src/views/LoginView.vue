@@ -78,37 +78,54 @@ const form = ref({ ...formTemplate });
 
 const errors = ref<FormErrors<typeof formTemplate>>({});
 
-async function submitForm() {
-  // TODO remove tmp navigation
-  console.log(form.value);
-  sessionStorage.setItem("loggedIn", "true");
-  return;
-  router.push({ path: "/dashboard" });
+type LoginResponse = {
+  token: string;
+  token_type: string;
+  expires_at: string;
+  user: {
+    id: number;
+    role: string;
+    name: string;
+    email: string;
+    email_verified_at: string;
+    created_at: string;
+    updated_at: string;
+    first_name: string;
+    last_name: string;
+    phone: string;
+    address_registered: string;
+    city: string;
+    birth_date: string;
+    pesel: string;
+    notes: string;
+  };
+};
 
+async function submitForm() {
   if (isSending.value) {
     return;
   }
 
   isSending.value = true;
 
-  const [response, errors] = await catchAxiosError(
+  const [response, error] = await catchAxiosError<LoginResponse>(
     window.API.post("/login", toFormData(form.value)),
   );
 
-  if (errors) {
-    // TODO handle display errors
+  if (error) {
     console.log(response);
-    console.log(errors);
+    console.log(error);
 
     isSending.value = false;
     return;
   }
 
-  console.log(response);
-  console.log(errors);
-  // TODO handle logged in session
+  (form.value.remember ? localStorage : sessionStorage).setItem("token", response.data.token);
 
+  form.value = { ...formTemplate };
   isSending.value = false;
+
+  router.push({ name: "Dashboard" });
 }
 </script>
 

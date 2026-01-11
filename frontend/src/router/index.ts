@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import routes from "./routes";
+import catchAxiosError from "@/helpers/catch-axios-error.ts";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,21 +9,25 @@ const router = createRouter({
 
 const websiteTitle = import.meta.env.VITE_BASE_TITLE;
 
-router.beforeEach((to, from, next) => {
-  // TODO remove
-  return next();
+router.beforeEach(async (to, from) => {
+  document.title = `${websiteTitle}${to.name ? ` - ${String(to.name)}` : ""}`;
+  const [, error] = await catchAxiosError(window.API.get("/me"));
 
-  const loggedIn = sessionStorage.getItem("loggedIn");
+  const isProtected = to.meta.protected;
+  const isRouteLogin = to.name === "Login";
+  const isAuthenticated = !error;
 
-  if (!loggedIn && to.name !== "Login") {
-    document.title = "Login";
+  if (isProtected && !isAuthenticated) {
+    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     return { name: "Login" };
   }
-  if (loggedIn && to.name === "Login") {
-    document.title = "Dashboard";
+
+  if (isRouteLogin && isAuthenticated) {
     return { name: "Dashboard" };
   }
-  document.title = `${websiteTitle}${to.name ? ` - ${String(to.name)}` : ""}`;
+
+  return true;
 });
 
 export default router;

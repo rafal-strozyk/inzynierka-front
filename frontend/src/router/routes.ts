@@ -4,6 +4,10 @@ const routes = [
   {
     path: "/",
     component: () => import("@/layouts/DefaultLayout.vue"),
+    meta: {
+      protected: true,
+    },
+    redirect: { name: "Dashboard" },
     children: [
       {
         path: "dashboard",

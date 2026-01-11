@@ -8,7 +8,7 @@
     </h2>
     <router-link
       class="text-lg leading-none font-medium uppercase transition-colors bg-gray-900 hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 px-6 py-4 rounded-2xl"
-      :to="{ name: 'Dashboard' }"
+      :to="{ path: '/' }"
     >
       Strona główna
     </router-link>

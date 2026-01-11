@@ -66,8 +66,14 @@
       </ul>
     </div>
     <div
-      class="absolute bottom-8 left-0 justify-center p-4 space-x-4 w-full flex bg-white dark:bg-gray-800 z-20"
+      class="absolute bottom-2 left-0 p-4 flex gap-y-2 flex-col items-center justify-center w-full bg-white dark:bg-gray-800 z-20"
     >
+      <button
+        @click.prevent="logout"
+        class="cursor-pointer flex items-center py-2 px-4 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white"
+      >
+        Wyloguj
+      </button>
       <dark-mode-switcher />
     </div>
   </aside>
@@ -81,8 +87,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import DarkModeSwitcher from "@/components/DarkModeSwitcher.vue";
-import type { RouteLocationRaw } from "vue-router";
+import { type RouteLocationRaw, useRouter } from "vue-router";
 
+const router = useRouter();
 const open = ref(false);
 
 type NavigationItem = {
@@ -90,6 +97,14 @@ type NavigationItem = {
   path: RouteLocationRaw;
   icon: string;
 };
+
+function logout(): void {
+  window.API.post("/logout").finally(() => {
+    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
+    router.push({ name: "Login" });
+  });
+}
 
 const navigationItems = ref<NavigationItem[]>([
   {

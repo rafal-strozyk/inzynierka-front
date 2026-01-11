@@ -7,6 +7,11 @@ class ApiHelper {
     this.axios = Axios.create({
       baseURL: "/api",
     });
+
+    this.axios.interceptors.request.use(function (config) {
+      config.headers.Authorization = `Bearer ${localStorage.getItem("token") ?? sessionStorage.getItem("token") ?? ""}`;
+      return config;
+    });
   }
 
   get(url: string, config?: AxiosRequestConfig) {
