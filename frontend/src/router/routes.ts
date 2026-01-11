@@ -22,18 +22,18 @@ const routes = [
     ],
   },
   {
-    path: "/:pathMatch(.*)*",
+    path: "/",
     component: () => import("@/layouts/ClearLayout.vue"),
     children: [
-      {
-        path: "",
-        name: "NotFound",
-        component: () => import("@/views/ErrorView.vue"),
-      },
       {
         path: "login",
         name: "Login",
         component: () => import("@/views/LoginView.vue"),
+      },
+      {
+        path: "/:pathMatch(.*)*",
+        name: "NotFound",
+        component: () => import("@/views/ErrorView.vue"),
       },
     ],
   },
