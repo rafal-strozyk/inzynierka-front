@@ -1,7 +1,12 @@
 <template>
-  <h2 class="even:bg-gray-200 min-h-96">Properties View</h2>
+  <section>
+    <h1 class="even:bg-gray-200 mb-4">Properties View</h1>
+    <table-component />
+  </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import TableComponent from "@/components/TableComponent.vue";
+</script>
 
 <style scoped></style>
