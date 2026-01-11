@@ -34,7 +34,7 @@
   </button>
 
   <aside
-    class="fixed top-0 left-0 z-40 w-64 h-screen pt-0 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    class="fixed top-0 left-0 z-40 w-64 h-dvh pt-0 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     :class="{ '-translate-x-full': !open }"
     aria-label="Sidenav"
     id="drawer-navigation"
@@ -43,6 +43,7 @@
       <ul class="space-y-2">
         <li v-for="(item, key) in navigationItems" :key>
           <router-link
+            @click.prevent="open = false"
             :to="item.path"
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
           >
@@ -54,6 +55,7 @@
       <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
         <li v-for="(item, key) in navigationSublist" :key>
           <router-link
+            @click.prevent="open = false"
             :to="item.path"
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
           >
