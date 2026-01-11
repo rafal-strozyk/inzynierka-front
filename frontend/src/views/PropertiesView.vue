@@ -1,7 +1,9 @@
 <template>
   <section class="max-w-7xl mx-auto">
-    <h1 class="even:bg-gray-200 mb-4">Properties View</h1>
-    <table-component v-bind="queryParams" />
+    <div>
+      <h1 class="even:bg-gray-200 mb-4">Properties View</h1>
+    </div>
+    <table-component v-model:queryParams="queryParams" :data :meta :is-loading="isLoading" />
   </section>
 </template>
 
@@ -10,7 +12,7 @@ import TableComponent from "@/components/TableComponent.vue";
 import { onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRoute, useRouter } from "vue-router";
-import { pageSizes } from "@/types/table.ts";
+import { pageSizes, type TableMetaData, type TablePropertyData } from "@/types/table.ts";
 
 const route = useRoute();
 const router = useRouter();
@@ -35,12 +37,17 @@ const queryParams = ref({
 });
 
 const isLoading = ref(false);
-const data = ref();
+
+const data = ref<TablePropertyData[]>([]);
+const meta = ref<TableMetaData>();
 
 async function fetchProperties() {
   isLoading.value = true;
 
-  const [response, error] = await catchAxiosError(
+  const [response, error] = await catchAxiosError<{
+    data: TablePropertyData[];
+    meta: TableMetaData;
+  }>(
     window.API.get(
       `/properties?page=${queryParams.value.page}&per_page=${queryParams.value.per_page}`,
     ),
@@ -58,7 +65,9 @@ async function fetchProperties() {
     },
   });
 
-  data.value = response.data;
+  data.value = response.data.data;
+  meta.value = response.data.meta;
+
   isLoading.value = false;
 }
 
