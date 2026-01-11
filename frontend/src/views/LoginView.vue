@@ -32,21 +32,12 @@
               v-model="form.password"
             />
             <div class="flex items-center justify-between">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="remember"
-                    aria-describedby="remember"
-                    type="checkbox"
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                  />
-                </div>
-                <div class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-500 dark:text-gray-300"
-                    >Zapamiętaj mnie</label
-                  >
-                </div>
-              </div>
+              <checkbox-component
+                id="remember"
+                label="Zapamiętaj mnie"
+                v-model="form.remember"
+                :errors="errors.remember"
+              />
               <a
                 href="#"
                 class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
@@ -72,12 +63,14 @@ import toFormData from "@/helpers/to-form-data.ts";
 import { useRouter } from "vue-router";
 import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
+import CheckboxComponent from "@/components/form/CheckboxComponent.vue";
 
 const router = useRouter();
 
 const formTemplate = {
   email: "",
   password: "",
+  remember: false,
 };
 
 const isSending = ref(false);
@@ -87,9 +80,10 @@ const errors = ref<FormErrors<typeof formTemplate>>({});
 
 async function submitForm() {
   // TODO remove tmp navigation
+  console.log(form.value);
   sessionStorage.setItem("loggedIn", "true");
-  router.push({ path: "/dashboard" });
   return;
+  router.push({ path: "/dashboard" });
 
   if (isSending.value) {
     return;
@@ -103,11 +97,15 @@ async function submitForm() {
 
   if (errors) {
     // TODO handle display errors
+    console.log(response);
+    console.log(errors);
 
     isSending.value = false;
     return;
   }
 
+  console.log(response);
+  console.log(errors);
   // TODO handle logged in session
 
   isSending.value = false;

@@ -13,7 +13,7 @@ const routes = [
       {
         path: "properties",
         name: "Properties",
-        component: () => import("../views/PropertiesView.vue"),
+        component: () => import("@/views/PropertiesView.vue"),
       },
     ],
   },

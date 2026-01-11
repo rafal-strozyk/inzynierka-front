@@ -1,6 +1,6 @@
 <template>
   <div class="bg-container">
-    <div v-for="_ in 25" class="rainbow" />
+    <div v-for="index in 25" class="rainbow" :key="index" />
     <div class="h" />
     <div class="v" />
   </div>
@@ -9,6 +9,9 @@
 <script setup lang="ts"></script>
 
 <style lang="scss" scoped>
+@use "sass:math";
+@use "sass:list";
+
 $purple: rgb(110 110 110);
 $blue: rgb(50 50 50);
 $green: rgb(80 80 80);
@@ -34,30 +37,25 @@ $length: 25;
     @for $i from 1 through $length {
       &:nth-child(#{$i}) {
         $colors: 0;
-        $r: random(6);
+        $r: math.random(6);
         @if $r == 1 {
-          $colors: $purple, $blue, $green;
-        }
-        @elseif $r == 2 {
-          $colors: $purple, $green, $blue;
-        }
-        @elseif $r == 3 {
-          $colors: $green, $purple, $blue;
-        }
-        @elseif $r == 4 {
-          $colors: $green, $blue, $purple;
-        }
-        @elseif $r == 5 {
-          $colors: $blue, $green, $purple;
-        }
-        @elseif $r == 6 {
-          $colors: $blue, $purple, $green;
+          $colors: ($purple, $blue, $green);
+        } @else if $r == 2 {
+          $colors: ($purple, $green, $blue);
+        } @else if $r == 3 {
+          $colors: ($green, $purple, $blue);
+        } @else if $r == 4 {
+          $colors: ($green, $blue, $purple);
+        } @else if $r == 5 {
+          $colors: ($blue, $green, $purple);
+        } @else if $r == 6 {
+          $colors: ($blue, $purple, $green);
         }
         box-shadow:
           -130px 0 80px 40px var(--background-color),
-          -50px 0 50px 25px nth($colors, 1),
-          0 0 50px 25px nth($colors, 2),
-          50px 0 50px 25px nth($colors, 3),
+          -50px 0 50px 25px list.nth($colors, 1),
+          0 0 50px 25px list.nth($colors, 2),
+          50px 0 50px 25px list.nth($colors, 3),
           130px 0 80px 40px var(--background-color);
         animation: #{calc($animationtime - $animationtime / $length / 2 * $i)}
           linear
