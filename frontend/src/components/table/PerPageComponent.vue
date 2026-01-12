@@ -9,7 +9,9 @@
         class="appearance-none block w-full text-sm px-3 pr-7 py-2 focus:ring-brand focus:border-brand shadow-xs placeholder:text-body bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 marker:right-6"
         v-model="model"
       >
-        <option v-for="pageSize in pageSizes" :value="pageSize">{{ pageSize }} per page</option>
+        <option v-for="pageSize in pageSizes" :key="pageSize" :value="pageSize">
+          {{ pageSize }} per page
+        </option>
       </select>
       <svg
         class="absolute w-3 right-3 top-1/2 -translate-y-1/4"
