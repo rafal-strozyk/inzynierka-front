@@ -5,7 +5,7 @@
         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
       >
         <!--    TODO ADD SEARCH FUNCTIONALITY    -->
-        <search-component />
+        <search-component v-model="queryParams.search" />
         <showing-component :meta />
       </div>
       <div class="overflow-x-auto">
@@ -153,6 +153,7 @@ type TableProps = {
 defineProps<TableProps>();
 
 const queryParams = defineModel<{
+  search: string;
   page: number;
   per_page: PageSizesUnion;
 }>("queryParams", { required: true });

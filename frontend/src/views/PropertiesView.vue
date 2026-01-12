@@ -23,6 +23,14 @@ const route = useRoute();
 const router = useRouter();
 
 const queryParams = ref({
+  search: ((): string => {
+    const search = route.query.search;
+    if (!search || Array.isArray(search)) {
+      return "";
+    }
+
+    return search;
+  })(),
   page: ((): number => {
     const page = route.query.page;
     if (!page || Array.isArray(page)) {
