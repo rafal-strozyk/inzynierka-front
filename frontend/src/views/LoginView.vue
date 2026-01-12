@@ -116,6 +116,8 @@ async function submitForm() {
     console.log(response);
     console.log(error);
 
+    // TODO HANDLE ERRORS
+
     isSending.value = false;
     return;
   }

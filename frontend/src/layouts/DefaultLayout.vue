@@ -15,4 +15,4 @@
 import SideNavComponent from "@/components/SideNavComponent.vue";
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

@@ -20,6 +20,8 @@
 </template>
 
 <script setup lang="ts">
+import generateRandomAffix from "@/helpers/generate-random-affix.ts";
+
 type InputTypes = "color" | "email" | "number" | "password" | "search" | "tel" | "text";
 type AutocompleteOptions =
   | "tel_national"
@@ -48,7 +50,7 @@ type InputProps = {
 };
 
 withDefaults(defineProps<InputProps>(), {
-  id: (Math.random() + 1).toString(36).substring(7),
+  id: generateRandomAffix(),
   type: "text",
 });
 

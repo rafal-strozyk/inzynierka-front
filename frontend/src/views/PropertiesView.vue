@@ -1,18 +1,23 @@
 <template>
   <section class="max-w-7xl mx-auto">
     <div>
-      <h1 class="even:bg-gray-200 mb-4">Properties View</h1>
+      <h1 class="text-3xl font-bold mb-4">Nieruchomości</h1>
     </div>
-    <table-component v-model:queryParams="queryParams" :data :meta :is-loading="isLoading" />
+    <table-component v-model:queryParams="queryParams" :data :meta :is-loading />
   </section>
 </template>
 
 <script setup lang="ts">
-import TableComponent from "@/components/TableComponent.vue";
-import { onMounted, ref } from "vue";
+import TableComponent from "@/components/table/TableComponent.vue";
+import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRoute, useRouter } from "vue-router";
-import { pageSizes, type TableMetaData, type TablePropertyData } from "@/types/table.ts";
+import {
+  pageSizes,
+  type PageSizesUnion,
+  type TableMetaData,
+  type TablePropertyData,
+} from "@/types/table.ts";
 
 const route = useRoute();
 const router = useRouter();
@@ -25,14 +30,14 @@ const queryParams = ref({
     }
     return parseInt(page) || 1;
   })(),
-  per_page: ((): number => {
+  per_page: ((): PageSizesUnion => {
     const perPage = route.query.per_page;
     if (!perPage || Array.isArray(perPage)) {
       return pageSizes[0];
     }
 
-    const intPerPage = parseInt(perPage);
-    return pageSizes.includes(intPerPage as (typeof pageSizes)[number]) ? intPerPage : pageSizes[0];
+    const intPerPage = parseInt(perPage) as PageSizesUnion;
+    return pageSizes.includes(intPerPage) ? intPerPage : pageSizes[0];
   })(),
 });
 
@@ -42,6 +47,9 @@ const data = ref<TablePropertyData[]>([]);
 const meta = ref<TableMetaData>();
 
 async function fetchProperties() {
+  if (isLoading.value) {
+    return;
+  }
   isLoading.value = true;
 
   const [response, error] = await catchAxiosError<{
@@ -55,8 +63,8 @@ async function fetchProperties() {
   if (error) {
     return;
   }
-  // TODO check if not outside range of pages;
 
+  // TODO check if not outside range of pages;
   router.replace({
     query: {
       ...router.currentRoute.value.query,
@@ -70,6 +78,21 @@ async function fetchProperties() {
 
   isLoading.value = false;
 }
+
+let fetchTimeout = NaN;
+
+watch(
+  queryParams,
+  () => {
+    clearTimeout(fetchTimeout);
+    fetchTimeout = setTimeout(() => {
+      fetchProperties();
+    }, 300);
+  },
+  {
+    deep: true,
+  },
+);
 
 onMounted(() => {
   fetchProperties();

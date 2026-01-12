@@ -1,4 +1,5 @@
 export const pageSizes = [10, 25, 50, 100] as const;
+export type PageSizesUnion = (typeof pageSizes)[number];
 
 export type TablePropertyData = {
   id: number;
@@ -12,16 +13,16 @@ export type TablePropertyData = {
 
 export type TableMetaData = {
   current_page: number;
-  from: null; // TODO change
+  from: number | null;
   last_page: number;
   links: {
     url: string;
     label: string;
-    page: null; // TODO change
+    page: number | null;
     active: false;
   }[];
   path: string;
   per_page: number;
-  to: null; // TODO change
+  to: number | null;
   total: number;
 };
