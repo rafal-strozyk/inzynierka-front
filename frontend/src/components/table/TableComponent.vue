@@ -6,19 +6,7 @@
       >
         <!--    TODO ADD SEARCH FUNCTIONALITY    -->
         <search-component />
-        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-          Showing
-          <span class="font-semibold text-gray-900 dark:text-white"
-            >{{
-              Math.min(
-                Math.max((queryParams.page - 1) * queryParams.per_page + 1, 1),
-                meta?.total || 0,
-              )
-            }}-{{ Math.min(queryParams.page * queryParams.per_page, meta?.total || 0) }}</span
-          >
-          of
-          <span class="font-semibold text-gray-900 dark:text-white">{{ meta?.total || 0 }}</span>
-        </span>
+        <showing-component :meta />
       </div>
       <div class="overflow-x-auto">
         <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
@@ -88,7 +76,7 @@
               <td class="px-4 py-3">
                 <button
                   @click.prevent="toggleActionsDropdown(row_index)"
-                  class="cursor-pointer inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                  class="cursor-pointer inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg dark:text-gray-400 dark:hover:text-gray-100"
                   type="button"
                 >
                   <svg
@@ -155,6 +143,7 @@ import { type PageSizesUnion, type TableMetaData, type TablePropertyData } from 
 import PerPageComponent from "@/components/table/PerPageComponent.vue";
 import SearchComponent from "@/components/table/SearchComponent.vue";
 import PaginationComponent from "@/components/table/PaginationComponent.vue";
+import ShowingComponent from "@/components/table/ShowingComponent.vue";
 
 type TableProps = {
   data: TablePropertyData[];

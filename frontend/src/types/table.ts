@@ -24,5 +24,5 @@ export type TableMetaData = {
   path: string;
   per_page: number;
   to: number | null;
-  total: number;
+  total: number | null;
 };

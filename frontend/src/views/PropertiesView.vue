@@ -46,11 +46,15 @@ const isLoading = ref(false);
 const data = ref<TablePropertyData[]>([]);
 const meta = ref<TableMetaData>();
 
+const bypassLoading = ref(false);
+
 async function fetchProperties() {
-  if (isLoading.value) {
+  if (isLoading.value && !bypassLoading.value) {
     return;
   }
+
   isLoading.value = true;
+  bypassLoading.value = false;
 
   const [response, error] = await catchAxiosError<{
     data: TablePropertyData[];
@@ -60,11 +64,20 @@ async function fetchProperties() {
       `/properties?page=${queryParams.value.page}&per_page=${queryParams.value.per_page}`,
     ),
   );
+
   if (error) {
     return;
   }
+  meta.value = response.data.meta;
 
-  // TODO check if not outside range of pages;
+  const currentPage = meta.value?.current_page;
+  if (currentPage < 1 || currentPage > meta.value?.last_page) {
+    bypassLoading.value = true;
+    queryParams.value.page = 1;
+
+    return;
+  }
+
   router.replace({
     query: {
       ...router.currentRoute.value.query,
@@ -74,7 +87,6 @@ async function fetchProperties() {
   });
 
   data.value = response.data.data;
-  meta.value = response.data.meta;
 
   isLoading.value = false;
 }
