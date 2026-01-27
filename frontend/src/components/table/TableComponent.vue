@@ -8,6 +8,7 @@
         <search-component v-model="queryParams.search" />
         <showing-component :meta />
       </div>
+      <!--  TODO dodac scrolle i sticky header w tabelce  -->
       <div class="overflow-x-auto">
         <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
           <svg
@@ -47,6 +48,7 @@
             </tr>
           </thead>
           <tbody>
+            <!--      TODO add hover effects      -->
             <tr class="border-b dark:border-gray-700" v-if="data.length <= 0">
               <td
                 class="text-base text-white text-center py-3 px-2"

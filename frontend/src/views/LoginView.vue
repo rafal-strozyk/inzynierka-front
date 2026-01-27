@@ -46,9 +46,6 @@
             </div>
             <button-submit :is-sending="isSending"> Zaloguj się </button-submit>
           </form>
-          <button-submit @click="router.push({ name: 'Dashboard' })" type="button"
-            >Skip ;)</button-submit
-          >
         </div>
       </div>
     </div>
