@@ -128,7 +128,7 @@ const navigationSublist = ref<NavigationItem[]>([
 ]);
 </script>
 
-<style>
+<style scoped>
 @reference "../styles/tailwind.css";
 
 .router-link-active {

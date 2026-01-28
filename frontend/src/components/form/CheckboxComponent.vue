@@ -24,7 +24,7 @@ type InputProps = {
   id?: string;
   label: string;
   name?: string;
-  errors: string[] | undefined;
+  errors: string | undefined;
   required?: boolean;
   disabled?: boolean;
 };

@@ -43,7 +43,7 @@ type InputProps = {
   placeholder?: string;
   type?: InputTypes;
   name?: string;
-  errors: string[] | undefined;
+  errors: string | undefined;
   autocomplete?: AutocompleteOptions;
   required?: boolean;
   disabled?: boolean;

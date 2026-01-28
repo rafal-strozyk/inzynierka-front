@@ -31,6 +31,7 @@
               :errors="errors.password"
               v-model="form.password"
             />
+            <errors-component :errors="errors.message" />
             <div class="flex items-center justify-between">
               <checkbox-component
                 id="remember"
@@ -61,6 +62,7 @@ import { useRouter } from "vue-router";
 import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import CheckboxComponent from "@/components/form/CheckboxComponent.vue";
+import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 
 const router = useRouter();
 
@@ -73,7 +75,7 @@ const formTemplate = {
 const isSending = ref(false);
 const form = ref({ ...formTemplate });
 
-const errors = ref<FormErrors<typeof formTemplate>>({});
+const errors = ref<FormErrors<typeof formTemplate & { message: null }>>({});
 
 type LoginResponse = {
   token: string;
@@ -103,17 +105,15 @@ async function submitForm() {
     return;
   }
 
+  errors.value = {};
   isSending.value = true;
 
-  const [response, error] = await catchAxiosError<LoginResponse>(
+  const [response, error] = await catchAxiosError<LoginResponse, typeof errors.value>(
     window.API.post("/login", toFormData(form.value)),
   );
 
   if (error) {
-    console.log(response);
-    console.log(error);
-
-    // TODO HANDLE ERRORS
+    errors.value = error.response?.data || { message: "Unhandled error!" };
 
     isSending.value = false;
     return;
