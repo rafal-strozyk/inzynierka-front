@@ -13,3 +13,21 @@ body {
 .fade-leave-active {
   transition: opacity .4s ease-in-out;
 }
+
+.modal-fade-scale-enter-from,
+.modal-fade-scale-leave-to {
+  opacity: 0;
+
+  .inner {
+    scale: 0.5;
+  }
+}
+
+.modal-fade-scale-enter-active,
+.modal-fade-scale-leave-active {
+  transition: opacity .4s ease-in-out;
+
+  .inner {
+    transition: scale .4s ease-in-out;
+  }
+}

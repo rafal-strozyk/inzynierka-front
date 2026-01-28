@@ -8,11 +8,13 @@
         </transition>
       </router-view>
     </main>
+    <modal-component />
   </div>
 </template>
 
 <script setup lang="ts">
 import SideNavComponent from "@/components/SideNavComponent.vue";
+import ModalComponent from "@/components/modal/ModalComponent.vue";
 </script>
 
 <style lang="scss" scoped></style>

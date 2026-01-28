@@ -30,6 +30,11 @@ const routes = [
           roles: ["admin", "owner"],
         },
       },
+      {
+        path: "my-data",
+        name: "MyData",
+        component: () => import("@/views/MyDataView.vue"),
+      },
     ],
   },
   {

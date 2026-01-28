@@ -116,6 +116,11 @@ const navigationItems = ref<NavigationItem[]>(
       path: { name: "Properties" },
       text: "Nieruchomości",
     },
+    {
+      icon: new URL("@/assets/img/icons/user.svg", import.meta.url).href,
+      path: { name: "MyData" },
+      text: "Moje dane",
+    },
   ].filter((item) => {
     // filter allowed routes for role
 
