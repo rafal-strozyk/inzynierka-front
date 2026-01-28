@@ -39,10 +39,10 @@
                 v-model="form.remember"
                 :errors="errors.remember"
               />
-              <a
-                href="#"
+              <router-link
+                :to="{ name: 'ForgotPassword' }"
                 class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >Zapomniałeś hasła?</a
+                >Zapomniałeś hasła?</router-link
               >
             </div>
             <button-submit :is-sending="isSending"> Zaloguj się </button-submit>

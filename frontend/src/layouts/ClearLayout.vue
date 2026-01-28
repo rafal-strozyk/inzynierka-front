@@ -4,8 +4,12 @@
     <div class="fixed right-4 top-4">
       <dark-mode-switcher />
     </div>
-    <div class="relative">
-      <router-view />
+    <div class="relative max-w-full">
+      <router-view v-slot="{ Component }">
+        <transition name="fade" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </div>
   </main>
 </template>
