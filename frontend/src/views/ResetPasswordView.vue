@@ -69,7 +69,6 @@ import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
-import { pageSizes, type PageSizesUnion } from "@/types/table.ts";
 import { useRoute } from "vue-router";
 
 const route = useRoute();

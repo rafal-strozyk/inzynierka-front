@@ -157,7 +157,7 @@ type TableProps = {
   meta: TableMetaData | undefined;
   isLoading: boolean;
 };
-const props = defineProps<TableProps>();
+defineProps<TableProps>();
 
 const queryParams = defineModel<{
   search: string;
@@ -192,7 +192,7 @@ const displayedColumns = ref<ColumnData[]>([
   },
 ] as const);
 
-const openedActionsIndex = ref<keyof typeof props.data | null>(null);
+const openedActionsIndex = ref<keyof TableProps["data"] | null>(null);
 
 function toggleActionsDropdown(index: number) {
   if (openedActionsIndex.value === undefined || openedActionsIndex.value !== index) {
