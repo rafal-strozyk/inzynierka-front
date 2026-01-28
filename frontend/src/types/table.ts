@@ -1,15 +1,17 @@
+import type { PropertyData } from "@/types/properties.ts";
+
 export const pageSizes = [10, 25, 50, 100] as const;
 export type PageSizesUnion = (typeof pageSizes)[number];
 
-export type TablePropertyData = {
-  id: number;
-  name: string;
-  address: string;
-  city: string;
-  rent_cost: number;
-  utilities_cost: number;
-  has_balcony: boolean;
-};
+type TablePropertyDataKeys =
+  | "id"
+  | "name"
+  | "city"
+  | "rent_cost"
+  | "utilities_cost"
+  | "has_balcony";
+
+export type TablePropertyData = Pick<PropertyData, TablePropertyDataKeys> & { address: string };
 
 export type TableMetaData = {
   current_page: number;

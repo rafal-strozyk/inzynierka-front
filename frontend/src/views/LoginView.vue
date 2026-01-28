@@ -63,6 +63,7 @@ import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import CheckboxComponent from "@/components/form/CheckboxComponent.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
+import type { UserData } from "@/types/user.ts";
 
 const router = useRouter();
 
@@ -81,23 +82,7 @@ type LoginResponse = {
   token: string;
   token_type: string;
   expires_at: string;
-  user: {
-    id: number;
-    role: string;
-    name: string;
-    email: string;
-    email_verified_at: string;
-    created_at: string;
-    updated_at: string;
-    first_name: string;
-    last_name: string;
-    phone: string;
-    address_registered: string;
-    city: string;
-    birth_date: string;
-    pesel: string;
-    notes: string;
-  };
+  user: UserData;
 };
 
 async function submitForm() {

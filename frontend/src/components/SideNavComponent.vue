@@ -69,7 +69,7 @@
       class="absolute bottom-2 left-0 p-4 flex gap-y-2 flex-col items-center justify-center w-full bg-white dark:bg-gray-800 z-20"
     >
       <button
-        @click.prevent="logout"
+        @click.prevent="logout(router)"
         class="cursor-pointer flex items-center py-2 px-4 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white"
       >
         Wyloguj
@@ -87,37 +87,64 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import DarkModeSwitcher from "@/components/DarkModeSwitcher.vue";
-import { type RouteLocationRaw, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/user.ts";
 
 const router = useRouter();
+const allRoutes = router.getRoutes();
 const open = ref(false);
 
 type NavigationItem = {
   text: string;
-  path: RouteLocationRaw;
+  path: { name: string } | { path: string };
   icon: string;
 };
 
-function logout(): void {
-  window.API.post("/logout").finally(() => {
-    sessionStorage.removeItem("token");
-    localStorage.removeItem("token");
-    router.push({ name: "Login" });
-  });
-}
+const userStore = useUserStore();
+const user = userStore.getUser();
+const logout = userStore.logoutUser;
 
-const navigationItems = ref<NavigationItem[]>([
-  {
-    icon: new URL("@/assets/img/icons/dashboard.svg", import.meta.url).href,
-    path: { name: "Dashboard" },
-    text: "Panel główny",
-  },
-  {
-    icon: new URL("@/assets/img/icons/property.svg", import.meta.url).href,
-    path: { name: "Properties" },
-    text: "Nieruchomości",
-  },
-]);
+const navigationItems = ref<NavigationItem[]>(
+  [
+    {
+      icon: new URL("@/assets/img/icons/dashboard.svg", import.meta.url).href,
+      path: { name: "Dashboard" },
+      text: "Panel główny",
+    },
+    {
+      icon: new URL("@/assets/img/icons/property.svg", import.meta.url).href,
+      path: { name: "Properties" },
+      text: "Nieruchomości",
+    },
+  ].filter((item) => {
+    // filter allowed routes for role
+
+    let matchingRoute;
+    if ("name" in item.path) {
+      const routeName = item.path.name;
+      matchingRoute = allRoutes.find((route) => route.name === routeName);
+    }
+
+    if ("path" in item.path) {
+      const routePath = item.path.path;
+      matchingRoute = allRoutes.find((route) => route.path === routePath);
+    }
+
+    if (!matchingRoute) {
+      return false;
+    }
+
+    const allowedRoles = matchingRoute.meta.roles;
+    if (!allowedRoles) {
+      return true;
+    }
+    if (!Array.isArray(allowedRoles)) {
+      return false;
+    }
+
+    return allowedRoles.includes(user.value?.role);
+  }),
+);
 
 const navigationSublist = ref<NavigationItem[]>([
   {

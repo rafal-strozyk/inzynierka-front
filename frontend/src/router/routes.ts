@@ -18,6 +18,17 @@ const routes = [
         path: "properties",
         name: "Properties",
         component: () => import("@/views/PropertiesView.vue"),
+        meta: {
+          roles: ["admin", "owner"],
+        },
+      },
+      {
+        path: "property/:propertyId",
+        name: "Property",
+        component: () => import("@/views/PropertyView.vue"),
+        meta: {
+          roles: ["admin", "owner"],
+        },
       },
     ],
   },

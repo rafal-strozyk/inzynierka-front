@@ -94,35 +94,40 @@
                   </svg>
                   <span class="sr-only"> Open Actions </span>
                 </button>
-                <div
-                  class="absolute z-10 w-44 bg-white rounded divide-y divide-gray-200 border border-gray-300 shadow dark:bg-gray-700 dark:divide-gray-600 dark:border-gray-500"
-                  :class="{ hidden: openedActionsIndex !== row_index }"
-                  style="transform: translateX(calc(-100% - 8px)) translateY(-52px)"
-                >
-                  <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-                    <li>
+                <transition mode="out-in" name="fade">
+                  <div
+                    v-if="openedActionsIndex === row_index"
+                    class="absolute z-10 w-44 bg-white rounded divide-y divide-gray-200 border border-gray-300 shadow dark:bg-gray-700 dark:divide-gray-600 dark:border-gray-500"
+                    style="transform: translateX(calc(-100% - 8px)) translateY(-52px)"
+                  >
+                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                      <li>
+                        <router-link
+                          :to="{
+                            name: 'Property',
+                            params: { propertyId: data[row_index]?.id },
+                          }"
+                          class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >Show</router-link
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >Edit</a
+                        >
+                      </li>
+                    </ul>
+                    <div class="py-1">
                       <a
                         href="#"
-                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >Show</a
+                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        >Delete</a
                       >
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                        >Edit</a
-                      >
-                    </li>
-                  </ul>
-                  <div class="py-1">
-                    <a
-                      href="#"
-                      class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >Delete</a
-                    >
+                    </div>
                   </div>
-                </div>
+                </transition>
               </td>
             </tr>
           </tbody>
@@ -152,7 +157,7 @@ type TableProps = {
   meta: TableMetaData | undefined;
   isLoading: boolean;
 };
-defineProps<TableProps>();
+const props = defineProps<TableProps>();
 
 const queryParams = defineModel<{
   search: string;
@@ -187,14 +192,14 @@ const displayedColumns = ref<ColumnData[]>([
   },
 ] as const);
 
-const openedActionsIndex = ref<number>();
+const openedActionsIndex = ref<keyof typeof props.data | null>(null);
 
 function toggleActionsDropdown(index: number) {
   if (openedActionsIndex.value === undefined || openedActionsIndex.value !== index) {
     openedActionsIndex.value = index;
     return;
   }
-  openedActionsIndex.value = undefined;
+  openedActionsIndex.value = null;
 }
 </script>
 

@@ -86,17 +86,16 @@ async function fetchProperties() {
     return;
   }
 
-  router.replace({
+  data.value = response.data.data;
+  isLoading.value = false;
+
+  void router.replace({
     query: {
       ...router.currentRoute.value.query,
       page: queryParams.value.page.toString(),
       per_page: queryParams.value.per_page.toString(),
     },
   });
-
-  data.value = response.data.data;
-
-  isLoading.value = false;
 }
 
 let fetchTimeout = NaN;
