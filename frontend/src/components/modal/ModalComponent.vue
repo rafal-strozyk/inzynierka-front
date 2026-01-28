@@ -33,7 +33,36 @@
           <div
             class="w-full bg-white rounded-lg shadow border border-gray-300 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-4 md:space-y-6 sm:p-8"
           >
-            <component :is="modal.component?.is" v-bind="modal.component?.props" />
+            <component
+              v-if="modal.type === 'component'"
+              :is="modal.component?.is"
+              v-bind="modal.component?.props"
+            />
+
+            <template v-else-if="modal.type === 'confirm'">
+              <h2
+                v-show="modal.title"
+                class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              >
+                {{ modal.title }}
+              </h2>
+              <p v-if="modal.body" class="mb-4">{{ modal.body }}</p>
+              <form
+                v-if="modal.callback.function"
+                @submit.prevent="
+                  modal.callback?.function();
+                  modalStore.resetModal();
+                "
+              >
+                <button type="button">Zamknij</button>
+                <button type="submit">
+                  {{ modal.callback.confirm }}
+                </button>
+              </form>
+              <form v-else @submit.prevent="modalStore.resetModal()">
+                <button type="submit">Zamknij</button>
+              </form>
+            </template>
           </div>
         </div>
       </div>

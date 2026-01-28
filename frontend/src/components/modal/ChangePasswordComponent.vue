@@ -1,9 +1,9 @@
 <template>
-  <h1
+  <h2
     class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
   >
     Ustaw nowe hasło
-  </h1>
+  </h2>
   <transition mode="out-in" name="fade">
     <form v-if="!formSent" @submit.prevent="submitForm" class="space-y-4 md:space-y-6">
       <input-component

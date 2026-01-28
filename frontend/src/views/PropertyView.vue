@@ -26,7 +26,6 @@
         <errors-component :errors="errors" />
       </div>
       <div v-else-if="propertyData">
-        {{ propertyData }}
         <div class="mb-4 grid gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-16">
           <div class="space-y-4">
             <dl>

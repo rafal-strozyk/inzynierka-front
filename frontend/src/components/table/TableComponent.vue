@@ -108,23 +108,25 @@
                             params: { propertyId: data[row_index]?.id },
                           }"
                           class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          >Show</router-link
+                          >Podgląd</router-link
                         >
                       </li>
                       <li>
                         <a
                           href="#"
                           class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          >Edit</a
+                          >Edycja</a
                         >
                       </li>
                     </ul>
                     <div class="py-1">
-                      <a
-                        href="#"
+                      <button
+                        @click.prevent="deleteProperty(data[row_index]?.id)"
+                        type="button"
                         class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                        >Delete</a
                       >
+                        Usuń
+                      </button>
                     </div>
                   </div>
                 </transition>
@@ -200,6 +202,12 @@ function toggleActionsDropdown(index: number) {
     return;
   }
   openedActionsIndex.value = null;
+}
+
+function deleteProperty(propertyId: number | undefined) {
+  if (!propertyId) {
+    return;
+  }
 }
 </script>
 
