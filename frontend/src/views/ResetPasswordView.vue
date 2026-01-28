@@ -19,6 +19,7 @@
                 label="Adres e-mail"
                 placeholder="Wprowadź adres e-mail"
                 required
+                disabled
                 :errors="errors.email"
                 v-model="form.email"
               />
@@ -69,26 +70,20 @@ import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 
-const route = useRoute();
+const router = useRouter();
+const route = router.currentRoute.value;
+const email = route.query.email;
+const token = route.query.token;
+
+if (!email || Array.isArray(email) || !token || Array.isArray(token)) {
+  void router.replace({ name: "NotFound" });
+}
+
 const formTemplate = {
-  email: ((): string => {
-    const email = route.query.email;
-    if (!email || Array.isArray(email)) {
-      return "";
-    }
-
-    return email;
-  })(),
-  token: ((): string => {
-    const token = route.query.token;
-    if (!token || Array.isArray(token)) {
-      return "";
-    }
-
-    return token;
-  })(),
+  email: typeof email === "string" ? email : "",
+  token: typeof token === "string" ? token : "",
   password: "",
   password_confirmation: "",
 };
