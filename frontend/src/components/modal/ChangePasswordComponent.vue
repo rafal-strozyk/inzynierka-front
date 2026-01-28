@@ -60,7 +60,6 @@ import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
-import { useRouter } from "vue-router";
 import { useModalStore } from "@/stores/modal.ts";
 
 const formTemplate = {

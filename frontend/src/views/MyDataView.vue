@@ -88,6 +88,7 @@
           @click.prevent="
             modal.setModal({
               show: true,
+              type: 'component',
               component: {
                 is: markRaw(ChangePasswordComponent) as typeof ChangePasswordComponent,
                 props: {},
