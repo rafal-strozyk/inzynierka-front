@@ -84,22 +84,22 @@
             </dl>
           </div>
         </div>
-        <button
-          @click.prevent="
-            modal.setModal({
-              show: true,
-              type: 'component',
-              component: {
-                is: markRaw(ChangePasswordComponent) as typeof ChangePasswordComponent,
-                props: {},
-              },
-            })
+        <generic-button
+          iconPath="/src/assets/img/icons/edit.svg"
+          :callback="
+            () =>
+              modal.setModal({
+                show: true,
+                type: 'component',
+                component: {
+                  is: markRaw(ChangePasswordComponent),
+                  props: {},
+                },
+              })
           "
-          type="button"
-          class="cursor-pointer inline-flex w-full items-center justify-center rounded-lg bg-primary-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:w-auto"
         >
           Zmień hasło
-        </button>
+        </generic-button>
       </div>
     </div>
   </section>
@@ -113,6 +113,7 @@ import { useUserStore } from "@/stores/user.ts";
 import type { UserData } from "@/types/user.ts";
 import { useModalStore } from "@/stores/modal.ts";
 import ChangePasswordComponent from "@/components/modal/ChangePasswordComponent.vue";
+import GenericButton from "@/components/form/GenericButton.vue";
 
 const modal = useModalStore();
 const userStore = useUserStore();
