@@ -5,6 +5,7 @@
         class="fixed z-40 inset-0 size-full flex justify-center items-center px-4"
         :class="[{ 'bg-black/50': modal.status === undefined }]"
         v-if="modal.show"
+        @click.self="modalStore.resetModal()"
       >
         <button
           @click.prevent="modalStore.resetModal()"
