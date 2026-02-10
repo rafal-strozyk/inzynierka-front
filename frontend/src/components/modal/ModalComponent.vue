@@ -1,9 +1,9 @@
 <template>
   <teleport to="body">
-    <transition mode="out-in" name="modal-fade-scale">
+    <transition mode="out-in" name="modal-fade-scale" @after-leave="isSending = false">
       <div
         class="fixed z-40 inset-0 size-full flex justify-center items-center px-4"
-        :class="[{ 'bg-black/50': modal.status === undefined }]"
+        :class="modal.status ? modalStatusStyling[modal.status] : 'bg-black/50'"
         v-if="modal.show"
         @click.self="modalStore.resetModal()"
       >
@@ -47,21 +47,32 @@
               >
                 {{ modal.title }}
               </h2>
-              <p v-if="modal.body" class="mb-4">{{ modal.body }}</p>
+              <p v-if="modal.body" class="mb-6">{{ modal.body }}</p>
               <form
-                v-if="modal.callback.function"
+                v-if="modal.callback"
                 @submit.prevent="
-                  modal.callback?.function();
-                  modalStore.resetModal();
+                  isSending = true;
+                  modal.callback.function();
                 "
               >
-                <button type="button">Zamknij</button>
-                <button type="submit">
-                  {{ modal.callback.confirm }}
-                </button>
+                <div class="flex flex-wrap justify-center gap-4">
+                  <generic-button class="flex-1" variant="ghost" :callback="modalStore.resetModal"
+                    >Zamknij</generic-button
+                  >
+                  <generic-button
+                    :isSending
+                    class="flex-1"
+                    :variant="modal.callback.variant"
+                    type="submit"
+                  >
+                    {{ modal.callback.confirm }}
+                  </generic-button>
+                </div>
               </form>
               <form v-else @submit.prevent="modalStore.resetModal()">
-                <button type="submit">Zamknij</button>
+                <div class="flex justify-center">
+                  <generic-button type="submit">Zamknij</generic-button>
+                </div>
               </form>
             </template>
           </div>
@@ -73,9 +84,19 @@
 
 <script setup lang="ts">
 import { useModalStore } from "@/stores/modal.ts";
+import GenericButton from "@/components/form/GenericButton.vue";
+import type { ModalStatus } from "@/types/modal.ts";
+import { ref } from "vue";
 
 const modalStore = useModalStore();
 const modal = modalStore.getModal();
+
+const isSending = ref(false);
+
+const modalStatusStyling = {
+  success: "bg-primary-600/50",
+  error: "bg-danger-600/50",
+} satisfies Record<ModalStatus, string>;
 </script>
 
 <style scoped></style>
