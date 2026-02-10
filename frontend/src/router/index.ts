@@ -3,7 +3,7 @@ import routes from "./routes";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
 import { useUserStore } from "@/stores/user.ts";
-import { useModalStore } from "@/stores/modal.ts";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -12,9 +12,6 @@ const router = createRouter({
 const websiteTitle = import.meta.env.VITE_BASE_TITLE;
 
 router.beforeEach(async (to) => {
-  const modalStore = useModalStore();
-  modalStore.resetModal();
-
   const userStore = useUserStore();
   const user = userStore.getUser();
 

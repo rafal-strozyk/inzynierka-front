@@ -11,11 +11,9 @@
 import TableComponent from "@/components/table/TableComponent.vue";
 import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import {
   type ColumnData,
-  pageSizes,
-  type PageSizesUnion,
   type TableActions,
   type TableMetaData,
   type TablePropertyData,
@@ -95,31 +93,7 @@ const actions = ref<TableActions<TablePropertyData>>([
       type: "button",
       text: "Usuń",
       callbackFn: (propertyData: TablePropertyData) => {
-        deletePropertyModal(propertyData, () => {
-          // TODO PRZENIESC WEWNATRZ FUNKCJI deletePropertyModal, TUTAJ PRZEKAZUJE TYLKO fetchProperties
-          /* TODO
-           *   FETCH
-           * RESET
-           * TIMEOUT 1MS
-           * DISPALY ERROR / SUCCESS
-           * */
-          /*fetch*/ setTimeout(() => {
-            /*reset*/ modalStore.resetModal();
-            console.log("fetchProperties");
-            // fetchProperties()
-            /*timeout*/ setTimeout(() => {
-              /*handle response*/ modalStore.setModal({
-                show: true,
-                type: "confirm",
-                status: "success",
-                title: "Sukces",
-                body: `Nieruchgomość ${propertyData.name} została usunięta poprawnie`,
-              });
-              console.log("fetchProperties");
-              // fetchProperties()
-            }, 1);
-          }, 2000);
-        });
+        deletePropertyModal(propertyData, fetchProperties);
       },
     },
   ],

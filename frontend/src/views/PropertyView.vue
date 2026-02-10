@@ -3,7 +3,6 @@
     <h1 class="text-3xl font-bold mb-4">
       Nieruchomość{{ propertyData && `: ${propertyData.name}` }}
     </h1>
-    aasdasaasdasaasdasaasdas
     <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
       <svg
         aria-hidden="true"
@@ -111,13 +110,22 @@
         </div>
       </div>
       <div class="flex gap-4">
-        <generic-button iconPath="/src/assets/img/icons/edit.svg" :callback="editPropertyModal">
+        <generic-button
+          iconPath="/src/assets/img/icons/edit.svg"
+          :callback="() => editPropertyModal(propertyData, fetchPropertyData)"
+        >
           Edytuj dane
         </generic-button>
         <generic-button
-          type="danger"
+          variant="danger"
           iconPath="/src/assets/img/icons/bin.svg"
-          :callback="deletePropertyModal"
+          :callback="
+            () =>
+              propertyData &&
+              deletePropertyModal(propertyData, () => {
+                router.replace({ name: 'Properties' });
+              })
+          "
         >
           Usuń
         </generic-button>
@@ -127,17 +135,14 @@
 </template>
 
 <script setup lang="ts">
-import { markRaw, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { PropertyData } from "@/types/properties.ts";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
-import { useModalStore } from "@/stores/modal.ts";
-import EditPropertyComponent from "@/components/modal/EditPropertyComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import GenericView from "@/views/GenericView.vue";
-
-const modalStore = useModalStore();
+import { deletePropertyModal, editPropertyModal } from "@/composables/properties.ts";
 
 const router = useRouter();
 const isLoading = ref(false);
@@ -181,18 +186,6 @@ async function fetchPropertyData() {
 
   propertyData.value = response.data.data;
 }
-
-function editPropertyModal() {
-  modalStore.setModal({
-    type: "component",
-    show: true,
-    component: {
-      is: markRaw(EditPropertyComponent),
-      props: { ...propertyData.value, callback: fetchPropertyData },
-    },
-  });
-}
-function deletePropertyModal() {}
 
 onMounted(() => {
   if (!isPropertyIdParamValid()) {

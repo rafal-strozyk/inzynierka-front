@@ -4,6 +4,7 @@ import EditPropertyComponent from "@/components/modal/EditPropertyComponent.vue"
 import type { PropertyData } from "@/types/properties.ts";
 import { useRoute } from "vue-router";
 import { pageSizes, type PageSizesUnion } from "@/types/table.ts";
+import catchAxiosError from "@/helpers/catch-axios-error.ts";
 
 export function getPropertiesQueryParams() {
   const route = useRoute();
@@ -69,7 +70,31 @@ export function deletePropertyModal(
     callback: {
       variant: "danger",
       confirm: "Potwierdź",
-      function: () => {
+      function: async () => {
+        const [, error] = await catchAxiosError(
+          window.API.delete(`/properties/${propertyData.id}`),
+        );
+
+        if (error) {
+          console.log(error);
+          modalStore.setModal({
+            show: true,
+            type: "confirm",
+            status: "error",
+            title: "Wystąpił błąd",
+            body: `Nie udało się usunąć nieruchomości: ${propertyData.name}`,
+          });
+          return;
+        }
+
+        modalStore.setModal({
+          show: true,
+          type: "confirm",
+          status: "success",
+          title: "Sukces",
+          body: `Nieruchgomość ${propertyData.name} została usunięta poprawnie`,
+        });
+
         callbackFn();
       },
     },

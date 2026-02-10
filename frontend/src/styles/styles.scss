@@ -11,7 +11,7 @@ body {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .4s ease-in-out;
+  transition: opacity .3s ease-in-out;
 }
 
 .modal-fade-scale-enter-from,
@@ -25,9 +25,9 @@ body {
 
 .modal-fade-scale-enter-active,
 .modal-fade-scale-leave-active {
-  transition: opacity .4s ease-in-out;
+  transition: opacity .3s ease-in-out;
 
   .inner {
-    transition: scale .4s ease-in-out;
+    transition: scale .3s ease-in-out;
   }
 }
