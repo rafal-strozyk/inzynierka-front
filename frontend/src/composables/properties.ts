@@ -76,7 +76,6 @@ export function deletePropertyModal(
         );
 
         if (error) {
-          console.log(error);
           modalStore.setModal({
             show: true,
             type: "confirm",
