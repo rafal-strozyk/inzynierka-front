@@ -2,7 +2,7 @@
   <teleport to="body">
     <transition mode="out-in" name="modal-fade-scale" @after-leave="isSending = false">
       <div
-        class="fixed z-40 inset-0 size-full flex justify-center items-center px-4"
+        class="fixed z-40 inset-0 size-full transition-colors duration-300 flex justify-center items-center px-4"
         :class="modal.status ? modalStatusStyling[modal.status] : 'bg-black/50'"
         v-if="modal.show"
         @click.self="modalStore.resetModal()"
@@ -32,49 +32,55 @@
         </button>
         <div class="inner w-sm max-w-full ma py-8 flex flex-col items-center justify-center">
           <div
-            class="w-full bg-white rounded-lg shadow border border-gray-300 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 space-y-4 md:space-y-6 sm:p-8"
+            class="w-full bg-white rounded-lg shadow border border-gray-300 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 sm:p-8"
           >
-            <component
-              v-if="modal.type === 'component'"
-              :is="modal.component?.is"
-              v-bind="modal.component?.props"
-            />
+            <transition mode="out-in" name="fade">
+              <component
+                v-if="modal.type === 'component'"
+                :is="modal.component?.is"
+                v-bind="modal.component?.props"
+              />
 
-            <template v-else-if="modal.type === 'confirm'">
-              <h2
-                v-show="modal.title"
-                class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              <div
+                class="space-y-4 md:space-y-6"
+                v-else-if="modal.type === 'confirm'"
+                :key="`${modal.title}${modal.body}${modal.callback?.variant}${modal.callback?.confirm}`"
               >
-                {{ modal.title }}
-              </h2>
-              <p v-if="modal.body" class="mb-6">{{ modal.body }}</p>
-              <form
-                v-if="modal.callback"
-                @submit.prevent="
-                  isSending = true;
-                  modal.callback.function();
-                "
-              >
-                <div class="flex flex-wrap justify-center gap-4">
-                  <generic-button class="flex-1" variant="ghost" :callback="modalStore.resetModal"
-                    >Zamknij</generic-button
-                  >
-                  <generic-button
-                    :isSending
-                    class="flex-1"
-                    :variant="modal.callback.variant"
-                    type="submit"
-                  >
-                    {{ modal.callback.confirm }}
-                  </generic-button>
-                </div>
-              </form>
-              <form v-else @submit.prevent="modalStore.resetModal()">
-                <div class="flex justify-center">
-                  <generic-button type="submit">Zamknij</generic-button>
-                </div>
-              </form>
-            </template>
+                <h2
+                  v-show="modal.title"
+                  class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+                >
+                  {{ modal.title }}
+                </h2>
+                <p v-if="modal.body" class="mb-6">{{ modal.body }}</p>
+                <form
+                  v-if="modal.callback"
+                  @submit.prevent="
+                    isSending = true;
+                    modal.callback.function();
+                  "
+                >
+                  <div class="flex flex-wrap justify-center gap-4">
+                    <generic-button class="flex-1" variant="ghost" :callback="modalStore.resetModal"
+                      >Zamknij</generic-button
+                    >
+                    <generic-button
+                      :isSending
+                      class="flex-1"
+                      :variant="modal.callback.variant"
+                      type="submit"
+                    >
+                      {{ modal.callback.confirm }}
+                    </generic-button>
+                  </div>
+                </form>
+                <form v-else @submit.prevent="modalStore.resetModal()">
+                  <div class="flex justify-center">
+                    <generic-button type="submit">Zamknij</generic-button>
+                  </div>
+                </form>
+              </div>
+            </transition>
           </div>
         </div>
       </div>
