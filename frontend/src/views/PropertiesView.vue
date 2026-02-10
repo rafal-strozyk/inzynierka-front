@@ -3,7 +3,7 @@
     <div>
       <h1 class="text-3xl font-bold mb-4">Nieruchomości</h1>
     </div>
-    <table-component v-model:queryParams="queryParams" :data :meta :is-loading />
+    <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
   </section>
 </template>
 
@@ -13,48 +13,123 @@ import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRoute, useRouter } from "vue-router";
 import {
+  type ColumnData,
   pageSizes,
   type PageSizesUnion,
+  type TableActions,
   type TableMetaData,
   type TablePropertyData,
 } from "@/types/table.ts";
+import {
+  deletePropertyModal,
+  editPropertyModal,
+  getPropertiesQueryParams,
+} from "@/composables/properties.ts";
+import type { PropertyData } from "@/types/properties.ts";
+import { useModalStore } from "@/stores/modal.ts";
 
-const route = useRoute();
 const router = useRouter();
+const modalStore = useModalStore();
 
-const queryParams = ref({
-  search: ((): string => {
-    const search = route.query.search;
-    if (!search || Array.isArray(search)) {
-      return "";
-    }
+const queryParams = ref(getPropertiesQueryParams());
 
-    return search;
-  })(),
-  page: ((): number => {
-    const page = route.query.page;
-    if (!page || Array.isArray(page)) {
-      return 1;
-    }
-    return parseInt(page) || 1;
-  })(),
-  per_page: ((): PageSizesUnion => {
-    const perPage = route.query.per_page;
-    if (!perPage || Array.isArray(perPage)) {
-      return pageSizes[0];
-    }
+const columns = ref<ColumnData<TablePropertyData>[]>([
+  {
+    label: "address",
+    text: "Adres",
+  },
+  {
+    label: "city",
+    text: "Miasto",
+  },
+  {
+    label: "rent_cost",
+    text: "Czynsz",
+  },
+  {
+    label: "utilities_cost",
+    text: "Media",
+  },
+  {
+    label: "has_balcony",
+    text: "Balkon",
+  },
+] as const);
 
-    const intPerPage = parseInt(perPage) as PageSizesUnion;
-    return pageSizes.includes(intPerPage) ? intPerPage : pageSizes[0];
-  })(),
-});
+const actions = ref<TableActions<TablePropertyData>>([
+  [
+    {
+      type: "router-link",
+      text: "Podgląd",
+      to: (propertyId: TablePropertyData["id"]) => {
+        return {
+          name: "Property",
+          params: { propertyId: propertyId },
+        };
+      },
+    },
+    {
+      type: "button",
+      text: "Edytuj dane",
+      callbackFn: async (propertyData: TablePropertyData) => {
+        const [response, error] = await catchAxiosError<{
+          data: PropertyData;
+        }>(window.API.get(`/properties/${propertyData.id}`));
+
+        if (error) {
+          modalStore.setModal({
+            show: true,
+            type: "confirm",
+            status: "error",
+            title: "Wystąpił błąd",
+            body: "Nie udało się pobrać danych nieruchomości",
+          });
+          return;
+        }
+        editPropertyModal(response.data.data);
+      },
+    },
+  ],
+  [
+    {
+      type: "button",
+      text: "Usuń",
+      callbackFn: (propertyData: TablePropertyData) => {
+        deletePropertyModal(propertyData, () => {
+          // TODO PRZENIESC WEWNATRZ FUNKCJI deletePropertyModal, TUTAJ PRZEKAZUJE TYLKO fetchProperties
+          /* TODO
+           *   FETCH
+           * RESET
+           * TIMEOUT 1MS
+           * DISPALY ERROR / SUCCESS
+           * */
+          /*fetch*/ setTimeout(() => {
+            /*reset*/ modalStore.resetModal();
+            console.log("fetchProperties");
+            // fetchProperties()
+            /*timeout*/ setTimeout(() => {
+              /*handle response*/ modalStore.setModal({
+                show: true,
+                type: "confirm",
+                status: "success",
+                title: "Sukces",
+                body: `Nieruchgomość ${propertyData.name} została usunięta poprawnie`,
+              });
+              console.log("fetchProperties");
+              // fetchProperties()
+            }, 1);
+          }, 2000);
+        });
+      },
+    },
+  ],
+]);
 
 const isLoading = ref(false);
+const bypassLoading = ref(false);
 
 const data = ref<TablePropertyData[]>([]);
 const meta = ref<TableMetaData>();
-
-const bypassLoading = ref(false);
 
 async function fetchProperties() {
   if (isLoading.value && !bypassLoading.value) {

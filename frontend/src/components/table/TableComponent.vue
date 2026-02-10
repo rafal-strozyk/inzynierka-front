@@ -8,7 +8,6 @@
         <search-component v-model="queryParams.search" />
         <showing-component :meta />
       </div>
-      <!--  TODO dodac scrolle i sticky header w tabelce  -->
       <div class="overflow-x-auto">
         <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
           <svg
@@ -35,7 +34,7 @@
             <tr>
               <th scope="col" class="px-4 py-3 font-medium text-gray-900 dark:text-white">Nazwa</th>
               <th
-                v-for="(column, index) in displayedColumns"
+                v-for="(column, index) in $props.columns"
                 :key="index"
                 scope="col"
                 class="px-4 py-3"
@@ -48,11 +47,10 @@
             </tr>
           </thead>
           <tbody>
-            <!--      TODO add hover effects      -->
             <tr class="border-b dark:border-gray-700" v-if="data.length <= 0">
               <td
                 class="text-base text-white text-center py-3 px-2"
-                :colspan="displayedColumns.length + 2"
+                :colspan="$props.columns.length + 2"
               >
                 Brak danych do wyświetlenia.
               </td>
@@ -61,7 +59,7 @@
               v-else
               v-for="(row, row_index) in data"
               :key="row_index"
-              class="border-b dark:border-gray-700"
+              class="transition border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
             >
               <th
                 scope="row"
@@ -69,12 +67,15 @@
               >
                 {{ row.name }}
               </th>
-              <td v-for="(column, index) in displayedColumns" :key="index" class="px-4 py-3">
+              <td v-for="(column, index) in $props.columns" :key="index" class="px-4 py-3">
                 {{
-                  column.label.startsWith("has") ? (column.label ? "✅" : "❌") : row[column.label]
+                  typeof column.label === "string" && column.label.startsWith("has")
+                    ? column.label
+                      ? "✅"
+                      : "❌"
+                    : row[column.label]
                 }}
               </td>
-              <!--       TODO add button functions       -->
               <td class="px-4 py-3">
                 <button
                   @click.prevent="toggleActionsDropdown(row_index)"
@@ -96,38 +97,35 @@
                 </button>
                 <transition mode="out-in" name="fade">
                   <div
-                    v-if="openedActionsIndex === row_index"
+                    v-if="openedActionsIndex === row_index && data[row_index]"
                     class="absolute z-10 w-44 bg-white rounded divide-y divide-gray-200 border border-gray-300 shadow dark:bg-gray-700 dark:divide-gray-600 dark:border-gray-500"
                     style="transform: translateX(calc(-100% - 8px)) translateY(-52px)"
                   >
-                    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-                      <li>
+                    <ul
+                      v-for="(actionsGroup, index) in props.actions"
+                      :key="index"
+                      class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                    >
+                      <li v-for="action in actionsGroup" :key="action.text">
                         <router-link
-                          :to="{
-                            name: 'Property',
-                            params: { propertyId: data[row_index]?.id },
-                          }"
-                          class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          >Podgląd</router-link
+                          v-if="action.type === 'router-link'"
+                          :to="action.to(data[row_index]?.id)"
+                          class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600"
+                          >{{ action.text }}</router-link
                         >
-                      </li>
-                      <li>
-                        <a
-                          href="#"
-                          class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                          >Edycja</a
+                        <button
+                          v-else-if="action.type === 'button'"
+                          @click.prevent="
+                            openedActionsIndex = null;
+                            action.callbackFn(data[row_index]);
+                          "
+                          type="button"
+                          class="text-start cursor-pointer w-full py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200"
                         >
+                          {{ action.text }}
+                        </button>
                       </li>
                     </ul>
-                    <div class="py-1">
-                      <button
-                        @click.prevent="deleteProperty(data[row_index]?.id)"
-                        type="button"
-                        class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                      >
-                        Usuń
-                      </button>
-                    </div>
                   </div>
                 </transition>
               </td>
@@ -146,20 +144,32 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script
+  setup
+  generic="DataType extends Record<string, string | number | boolean | undefined> & { id: number }"
+  lang="ts"
+>
 import { ref } from "vue";
-import { type PageSizesUnion, type TableMetaData, type TablePropertyData } from "@/types/table.ts";
+import {
+  type ColumnData,
+  type PageSizesUnion,
+  type TableActions,
+  type TableMetaData,
+} from "@/types/table.ts";
 import PerPageComponent from "@/components/table/PerPageComponent.vue";
 import SearchComponent from "@/components/table/SearchComponent.vue";
 import PaginationComponent from "@/components/table/PaginationComponent.vue";
 import ShowingComponent from "@/components/table/ShowingComponent.vue";
 
-type TableProps = {
-  data: TablePropertyData[];
+type TableProps<T> = {
+  data: T[];
+  columns: ColumnData<T>[];
+  actions: TableActions<T>;
   meta: TableMetaData | undefined;
   isLoading: boolean;
 };
-defineProps<TableProps>();
+
+const props = defineProps<TableProps<DataType>>();
 
 const queryParams = defineModel<{
   search: string;
@@ -167,34 +177,7 @@ const queryParams = defineModel<{
   per_page: PageSizesUnion;
 }>("queryParams", { required: true });
 
-type ColumnData = {
-  label: keyof TablePropertyData;
-  text: string;
-};
-const displayedColumns = ref<ColumnData[]>([
-  {
-    label: "address",
-    text: "Adres",
-  },
-  {
-    label: "city",
-    text: "Miasto",
-  },
-  {
-    label: "rent_cost",
-    text: "Czynsz",
-  },
-  {
-    label: "utilities_cost",
-    text: "Media",
-  },
-  {
-    label: "has_balcony",
-    text: "Balkon",
-  },
-] as const);
-
-const openedActionsIndex = ref<keyof TableProps["data"] | null>(null);
+const openedActionsIndex = ref<keyof TableProps<DataType>["data"] | null>(null);
 
 function toggleActionsDropdown(index: number) {
   if (openedActionsIndex.value === undefined || openedActionsIndex.value !== index) {
@@ -202,12 +185,6 @@ function toggleActionsDropdown(index: number) {
     return;
   }
   openedActionsIndex.value = null;
-}
-
-function deleteProperty(propertyId: number | undefined) {
-  if (!propertyId) {
-    return;
-  }
 }
 </script>
 

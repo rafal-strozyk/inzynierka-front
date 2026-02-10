@@ -3,6 +3,26 @@ import type { PropertyData } from "@/types/properties.ts";
 export const pageSizes = [10, 25, 50, 100] as const;
 export type PageSizesUnion = (typeof pageSizes)[number];
 
+export type ColumnData<T> = {
+  label: keyof T;
+  text: string;
+};
+
+type TableAction<CallbackData> = (
+  | {
+      type: "router-link";
+      to: (id: number) => string | object;
+    }
+  | {
+      type: "button";
+      callbackFn: (data: CallbackData) => unknown | Promise<unknown>;
+    }
+) & {
+  text: string;
+};
+
+export type TableActions<T> = Array<Array<TableAction<T>>>;
+
 type TablePropertyDataKeys =
   | "id"
   | "name"
