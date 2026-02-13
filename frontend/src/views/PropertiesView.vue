@@ -1,7 +1,7 @@
 <template>
   <section class="max-w-7xl mx-auto">
     <div>
-      <h1 class="text-3xl font-bold mb-4">Nieruchomości</h1>
+      <h1 class="text-3xl font-bold">Nieruchomości</h1>
     </div>
     <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
   </section>

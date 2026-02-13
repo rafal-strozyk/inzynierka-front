@@ -31,3 +31,13 @@ body {
     transition: scale .3s ease-in-out;
   }
 }
+
+@layer base {
+  h1 {
+    margin-bottom: var(--spacing-4, 16px);
+  }
+
+  h2 {
+    margin-bottom: var(--spacing-4, 16px);
+  }
+}

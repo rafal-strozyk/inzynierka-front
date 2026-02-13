@@ -2,8 +2,8 @@
   <section
     class="flex flex-col items-center justify-center text-gray-900 dark:text-white text-center"
   >
-    <h1 class="text-7xl font-bold leading-tight tracking-tight">404</h1>
-    <h2 class="text-2xl font-medium text-balance mb-5 max-w-72">
+    <h1 class="text-7xl font-bold leading-tight tracking-tight mb-0">404</h1>
+    <h2 class="text-2xl font-medium text-balance max-w-72">
       Strona nie istnieje, bądź nie masz do niej dostępu.
     </h2>
     <router-link

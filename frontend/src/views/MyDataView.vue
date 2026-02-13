@@ -1,7 +1,7 @@
 <template>
   <section class="max-w-7xl mx-auto">
     <div>
-      <h1 class="text-3xl font-bold mb-4">Moje dane</h1>
+      <h1 class="text-3xl font-bold">Moje dane</h1>
       <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
         <svg
           aria-hidden="true"

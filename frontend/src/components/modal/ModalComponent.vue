@@ -42,7 +42,6 @@
               />
 
               <div
-                class="space-y-4 md:space-y-6"
                 v-else-if="modal.type === 'confirm'"
                 :key="`${modal.title}${modal.body}${modal.callback?.variant}${modal.callback?.confirm}`"
               >

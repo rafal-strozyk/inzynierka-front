@@ -1,8 +1,6 @@
 <template>
   <generic-view>
-    <h1 class="text-3xl font-bold mb-4">
-      Nieruchomość{{ propertyData && `: ${propertyData.name}` }}
-    </h1>
+    <h1 class="text-3xl font-bold">Nieruchomość{{ propertyData && `: ${propertyData.name}` }}</h1>
     <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
       <svg
         aria-hidden="true"
