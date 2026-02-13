@@ -17,4 +17,5 @@ export type PropertyData = {
   rent_by_rooms: boolean;
   created_at: string;
   updated_at: string;
+  photos: unknown[];
 };

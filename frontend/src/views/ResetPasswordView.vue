@@ -20,7 +20,7 @@
                 placeholder="Wprowadź adres e-mail"
                 required
                 disabled
-                :errors="errors.email"
+                :errors="'email' in errors ? errors.email : undefined"
                 v-model="form.email"
               />
               <input-component
@@ -30,7 +30,7 @@
                 label="Nowe hasło"
                 placeholder="••••••••"
                 required
-                :errors="errors.password"
+                :errors="'password' in errors ? errors.password : undefined"
                 v-model="form.password"
               />
               <input-component
@@ -40,10 +40,12 @@
                 label="Potwierdź nowe hasło"
                 placeholder="••••••••"
                 required
-                :errors="errors.password_confirmation"
+                :errors="
+                  'password_confirmation' in errors ? errors.password_confirmation : undefined
+                "
                 v-model="form.password_confirmation"
               />
-              <errors-component :errors="errors.message" />
+              <errors-component :errors="'message' in errors ? errors.message : undefined" />
               <button-submit :is-sending="isSending"> Wyślij email </button-submit>
             </form>
             <div v-else>
@@ -67,10 +69,11 @@ import InputComponent from "@/components/form/InputComponent.vue";
 import { ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
-import type { FormErrors } from "@/types/form.ts";
+import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { useRouter } from "vue-router";
+import { handleFetchErrors } from "@/composables/form.ts";
 
 const router = useRouter();
 const route = router.currentRoute.value;
@@ -92,7 +95,7 @@ const isSending = ref(false);
 const form = ref({ ...formTemplate });
 
 const formSent = ref(false);
-const errors = ref<FormErrors<typeof formTemplate & { message: null }>>({});
+const errors = ref<FormErrors<typeof formTemplate>>({});
 
 async function submitForm() {
   if (isSending.value) {
@@ -102,12 +105,12 @@ async function submitForm() {
   errors.value = {};
   isSending.value = true;
 
-  const [, error] = await catchAxiosError(
+  const [, error] = await catchAxiosError<unknown, FormErrorResponse<typeof formTemplate>>(
     window.API.post("/reset-password", toFormData(form.value)),
   );
 
   if (error) {
-    errors.value = error.response?.data || { message: "Unhandled error!" };
+    errors.value = handleFetchErrors(error);
 
     isSending.value = false;
     return;

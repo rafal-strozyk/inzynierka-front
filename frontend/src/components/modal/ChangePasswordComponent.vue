@@ -13,7 +13,7 @@
         label="Stare hasło"
         placeholder="••••••••"
         required
-        :errors="errors.current_password"
+        :errors="'current_password' in errors ? errors.current_password : undefined"
         v-model="form.current_password"
       />
       <input-component
@@ -23,7 +23,7 @@
         label="Nowe hasło"
         placeholder="••••••••"
         required
-        :errors="errors.password"
+        :errors="'password' in errors ? errors.password : undefined"
         v-model="form.password"
       />
       <input-component
@@ -33,10 +33,10 @@
         label="Potwierdź nowe hasło"
         placeholder="••••••••"
         required
-        :errors="errors.password_confirmation"
+        :errors="'password_confirmation' in errors ? errors.password_confirmation : undefined"
         v-model="form.password_confirmation"
       />
-      <errors-component :errors="errors.message" />
+      <errors-component :errors="'message' in errors ? errors.message : undefined" />
       <button-submit :is-sending="isSending"> Potwierdź </button-submit>
     </form>
     <div v-else>
@@ -57,10 +57,11 @@ import InputComponent from "@/components/form/InputComponent.vue";
 import { ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
-import type { FormErrors } from "@/types/form.ts";
+import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { useModalStore } from "@/stores/modal.ts";
+import { handleFetchErrors } from "@/composables/form.ts";
 
 const formTemplate = {
   current_password: "",
@@ -74,7 +75,7 @@ const isSending = ref(false);
 const form = ref({ ...formTemplate });
 
 const formSent = ref(false);
-const errors = ref<FormErrors<typeof formTemplate & { message: null }>>({});
+const errors = ref<FormErrors<typeof formTemplate>>({});
 
 async function submitForm() {
   if (isSending.value) {
@@ -84,12 +85,12 @@ async function submitForm() {
   errors.value = {};
   isSending.value = true;
 
-  const [, error] = await catchAxiosError(
+  const [, error] = await catchAxiosError<unknown, FormErrorResponse<typeof formTemplate>>(
     window.API.post("/me/change-password", toFormData(form.value)),
   );
 
   if (error) {
-    errors.value = error.response?.data || { message: "Unhandled error!" };
+    errors.value = handleFetchErrors(error);
 
     isSending.value = false;
     return;

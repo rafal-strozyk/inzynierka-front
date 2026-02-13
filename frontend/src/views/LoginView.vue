@@ -18,7 +18,7 @@
               label="Adres e-mail"
               placeholder="Wprowadź adres e-mail"
               required
-              :errors="errors.email"
+              :errors="'email' in errors ? errors.email : undefined"
               v-model="form.email"
             />
             <input-component
@@ -28,16 +28,16 @@
               label="Hasło"
               placeholder="••••••••"
               required
-              :errors="errors.password"
+              :errors="'password' in errors ? errors.password : undefined"
               v-model="form.password"
             />
-            <errors-component :errors="errors.message" />
+            <errors-component :errors="'message' in errors ? errors.message : undefined" />
             <div class="flex items-center justify-between">
               <checkbox-component
                 id="remember"
                 label="Zapamiętaj mnie"
                 v-model="form.remember"
-                :errors="errors.remember"
+                :errors="'remember' in errors ? errors.remember : undefined"
               />
               <router-link
                 :to="{ name: 'ForgotPassword' }"
@@ -59,11 +59,12 @@ import { ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
 import { useRouter } from "vue-router";
-import type { FormErrors } from "@/types/form.ts";
+import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
 import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import CheckboxComponent from "@/components/form/CheckboxComponent.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import type { UserData } from "@/types/user.ts";
+import { handleFetchErrors } from "@/composables/form.ts";
 
 const router = useRouter();
 
@@ -76,7 +77,7 @@ const formTemplate = {
 const isSending = ref(false);
 const form = ref({ ...formTemplate });
 
-const errors = ref<FormErrors<typeof formTemplate & { message: null }>>({});
+const errors = ref<FormErrors<typeof formTemplate>>({});
 
 type LoginResponse = {
   token: string;
@@ -93,12 +94,13 @@ async function submitForm() {
   errors.value = {};
   isSending.value = true;
 
-  const [response, error] = await catchAxiosError<LoginResponse, typeof errors.value>(
-    window.API.post("/login", toFormData(form.value)),
-  );
+  const [response, error] = await catchAxiosError<
+    LoginResponse,
+    FormErrorResponse<typeof formTemplate>
+  >(window.API.post("/login", toFormData(form.value)));
 
   if (error) {
-    errors.value = error.response?.data || { message: "Unhandled error!" };
+    errors.value = handleFetchErrors(error);
 
     isSending.value = false;
     return;

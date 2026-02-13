@@ -5,12 +5,13 @@
         class="fixed z-40 inset-0 size-full transition-colors duration-300 flex justify-center items-center px-4"
         :class="modal.status ? modalStatusStyling[modal.status] : 'bg-black/50'"
         v-if="modal.show"
-        @click.self="modalStore.resetModal()"
+        @pointerdown="modalBackgroundPointerDown"
+        @pointerup="modalBackgroundPointerUp"
       >
         <button
           @click.prevent="modalStore.resetModal()"
           type="button"
-          class="fixed top-4 right-4 cursor-pointer"
+          class="fixed top-2 right-2 cursor-pointer"
         >
           <svg
             class="size-10 text-white dark:drop-shadow-none drop-shadow-2xl"
@@ -30,16 +31,16 @@
             />
           </svg>
         </button>
-        <div class="inner w-sm max-w-full ma py-8 flex flex-col items-center justify-center">
+        <div
+          class="h-full inner @2xs:min-w-sm max-w-full py-12 lg:py-8 flex flex-col justify-center items-center"
+        >
           <div
-            class="w-full bg-white rounded-lg shadow border border-gray-300 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 sm:p-8"
+            class="w-full max-h-full bg-white rounded-lg shadow border border-gray-300 sm:max-w-xl dark:bg-gray-800 dark:border-gray-700 p-6 sm:p-8"
           >
             <transition mode="out-in" name="fade">
-              <component
-                v-if="modal.type === 'component'"
-                :is="modal.component?.is"
-                v-bind="modal.component?.props"
-              />
+              <div v-if="modal.type === 'component'" class="flex flex-col max-h-full">
+                <component :is="modal.component?.is" v-bind="modal.component?.props" />
+              </div>
 
               <div
                 v-else-if="modal.type === 'confirm'"
@@ -98,10 +99,26 @@ const modal = modalStore.getModal();
 
 const isSending = ref(false);
 
+const closeModalFlag = ref(false);
+
 const modalStatusStyling = {
   success: "bg-primary-600/50",
   error: "bg-danger-600/50",
 } satisfies Record<ModalStatus, string>;
+
+function modalBackgroundPointerDown(e: PointerEvent) {
+  closeModalFlag.value = e.target === e.currentTarget;
+}
+
+function modalBackgroundPointerUp(e: PointerEvent) {
+  const endedOnOverlay = e.target === e.currentTarget;
+
+  if (closeModalFlag.value && endedOnOverlay) {
+    modalStore.resetModal();
+  }
+
+  closeModalFlag.value = false;
+}
 </script>
 
 <style scoped></style>

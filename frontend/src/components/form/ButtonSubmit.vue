@@ -12,7 +12,7 @@
     <template v-if="isSending">
       <svg
         aria-hidden="true"
-        class="size-7 text-neutral-tertiary animate-spin brightness-200 fill-primary-300 text-gray-800 dark:text-gray-700 dark:fill-primary-200"
+        class="size-7 text-neutral-tertiary animate-spin brightness-200 fill-primary-300 text-gray-700 dark:text-gray-700 dark:fill-primary-200"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
