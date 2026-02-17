@@ -1,5 +1,13 @@
 type Data = {
-  [key: string]: string | number | File | boolean | undefined | null | string[] | (() => unknown);
+  [key: string]:
+    | string
+    | number
+    | File
+    | boolean
+    | undefined
+    | null
+    | Array<string | number | File>
+    | (() => unknown);
 };
 
 export default (data: Data) => {
@@ -25,7 +33,7 @@ export default (data: Data) => {
 
     if (Array.isArray(value)) {
       for (const [index, val] of value.entries()) {
-        formData.append(`${key}[${index}]`, val);
+        formData.append(`${key}[${index}]`, typeof val === "number" ? val.toString() : val);
       }
       continue;
     }
