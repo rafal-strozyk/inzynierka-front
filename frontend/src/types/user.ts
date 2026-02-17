@@ -1,4 +1,5 @@
-type UserRoles = "admin" | "owner" | "tenant";
+import { roleDictionary } from "@/helpers/dictionary.ts";
+export type UserRoles = "admin" | "owner" | "tenant";
 
 export type UserData = {
   id: number;
@@ -16,4 +17,10 @@ export type UserData = {
   birth_date: string;
   pesel: string;
   notes: string;
+};
+
+type TableUserDataKeys = "id" | "name" | "email" | "phone";
+export type TableUserResponse = Pick<UserData, TableUserDataKeys | "role">;
+export type TableUserData = Pick<UserData, TableUserDataKeys> & {
+  role: (typeof roleDictionary)[UserRoles];
 };

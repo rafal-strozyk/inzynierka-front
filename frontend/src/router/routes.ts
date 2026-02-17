@@ -35,6 +35,22 @@ const routes = [
         name: "MyData",
         component: () => import("@/views/MyDataView.vue"),
       },
+      {
+        path: "users",
+        name: "Users",
+        component: () => import("@/views/UsersView.vue"),
+        meta: {
+          roles: ["admin"],
+        },
+      },
+      {
+        path: "user/:userId",
+        name: "User",
+        component: () => import("@/views/UserView.vue"),
+        meta: {
+          roles: ["admin"],
+        },
+      },
     ],
   },
   {
