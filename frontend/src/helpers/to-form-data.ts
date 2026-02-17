@@ -1,5 +1,5 @@
 type Data = {
-  [key: string]: string | number | File | boolean | undefined | null | unknown[] | (() => unknown);
+  [key: string]: string | number | File | boolean | undefined | null | string[] | (() => unknown);
 };
 
 export default (data: Data) => {
@@ -15,7 +15,18 @@ export default (data: Data) => {
       continue;
     }
 
-    if (value instanceof Function) {
+    if (typeof value === "function") {
+      continue;
+    }
+    if (typeof value === "boolean") {
+      formData.append(key, value ? "1" : "0");
+      continue;
+    }
+
+    if (Array.isArray(value)) {
+      for (const [index, val] of value.entries()) {
+        formData.append(`${key}[${index}]`, val);
+      }
       continue;
     }
 
