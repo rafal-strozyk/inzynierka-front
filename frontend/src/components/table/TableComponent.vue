@@ -32,9 +32,11 @@
             class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
             <tr>
-              <th scope="col" class="px-4 py-3 font-medium text-gray-900 dark:text-white">Nazwa</th>
+              <th :key="0" scope="col" class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                {{ $props.columns[0]?.text }}
+              </th>
               <th
-                v-for="(column, index) in $props.columns"
+                v-for="(column, index) in $props.columns?.slice(1, $props.columns.length)"
                 :key="index"
                 scope="col"
                 class="px-4 py-3"
@@ -67,7 +69,11 @@
               >
                 {{ row.name }}
               </th>
-              <td v-for="(column, index) in $props.columns" :key="index" class="px-4 py-3">
+              <td
+                v-for="(column, index) in $props.columns?.slice(1, $props.columns.length)"
+                :key="index"
+                class="px-4 py-3"
+              >
                 {{
                   typeof column.label === "string" && column.label.startsWith("has")
                     ? column.label

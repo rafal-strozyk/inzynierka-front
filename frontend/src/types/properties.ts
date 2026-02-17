@@ -19,3 +19,12 @@ export type PropertyData = {
   updated_at: string;
   photos: unknown[];
 };
+
+type TablePropertyDataKeys =
+  | "id"
+  | "name"
+  | "city"
+  | "rent_cost"
+  | "utilities_cost"
+  | "has_balcony";
+export type TablePropertyData = Pick<PropertyData, TablePropertyDataKeys> & { address: string };

@@ -12,26 +12,22 @@ import TableComponent from "@/components/table/TableComponent.vue";
 import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRouter } from "vue-router";
-import {
-  type ColumnData,
-  type TableActions,
-  type TableMetaData,
-  type TablePropertyData,
-} from "@/types/table.ts";
-import {
-  deletePropertyModal,
-  editPropertyModal,
-  getPropertiesQueryParams,
-} from "@/composables/properties.ts";
-import type { PropertyData } from "@/types/properties.ts";
+import { type ColumnData, type TableActions, type TableMetaData } from "@/types/table.ts";
+import { deletePropertyModal, editPropertyModal } from "@/composables/properties.ts";
+import type { PropertyData, TablePropertyData } from "@/types/properties.ts";
 import { useModalStore } from "@/stores/modal.ts";
+import { getTableQueryParams } from "@/composables/table.ts";
 
 const router = useRouter();
 const modalStore = useModalStore();
 
-const queryParams = ref(getPropertiesQueryParams());
+const queryParams = ref(getTableQueryParams());
 
 const columns = ref<ColumnData<TablePropertyData>[]>([
+  {
+    label: "name",
+    text: "Nazwa",
+  },
   {
     label: "address",
     text: "Adres",

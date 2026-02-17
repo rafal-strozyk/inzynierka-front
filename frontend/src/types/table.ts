@@ -23,16 +23,6 @@ type TableAction<CallbackData> = (
 
 export type TableActions<T> = Array<Array<TableAction<T>>>;
 
-type TablePropertyDataKeys =
-  | "id"
-  | "name"
-  | "city"
-  | "rent_cost"
-  | "utilities_cost"
-  | "has_balcony";
-
-export type TablePropertyData = Pick<PropertyData, TablePropertyDataKeys> & { address: string };
-
 export type TableMetaData = {
   current_page: number;
   from: number | null;

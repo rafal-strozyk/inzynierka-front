@@ -141,6 +141,7 @@ import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import GenericView from "@/views/GenericView.vue";
 import { deletePropertyModal, editPropertyModal } from "@/composables/properties.ts";
+import { isRouteParamValidNumber } from "@/composables/route.ts";
 
 const router = useRouter();
 const isLoading = ref(false);
@@ -148,21 +149,6 @@ const errors = ref();
 
 const propertyId = ref<number | null>(null);
 const propertyData = ref<PropertyData>();
-
-function isPropertyIdParamValid(): boolean {
-  const routePropertyId = router.currentRoute.value.params.propertyId;
-  if (Array.isArray(routePropertyId) || routePropertyId === undefined) {
-    errors.value = "Invalid property ID";
-    return false;
-  }
-  const parsedPropertyId = parseInt(routePropertyId);
-  if (Number.isNaN(parsedPropertyId)) {
-    errors.value = "Invalid property ID";
-    return false;
-  }
-  propertyId.value = parsedPropertyId;
-  return true;
-}
 
 async function fetchPropertyData() {
   if (isLoading.value) {
@@ -186,9 +172,13 @@ async function fetchPropertyData() {
 }
 
 onMounted(() => {
-  if (!isPropertyIdParamValid()) {
+  const [id, error] = isRouteParamValidNumber("propertyId");
+  if (error !== undefined) {
+    errors.value = error;
     return;
   }
+
+  propertyId.value = id;
   fetchPropertyData();
 });
 </script>

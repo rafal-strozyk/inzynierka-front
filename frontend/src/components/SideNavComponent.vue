@@ -89,6 +89,7 @@ import { ref } from "vue";
 import DarkModeSwitcher from "@/components/DarkModeSwitcher.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user.ts";
+import type { UserRoles } from "@/types/user.ts";
 
 const router = useRouter();
 const allRoutes = router.getRoutes();
@@ -117,39 +118,44 @@ const navigationItems = ref<NavigationItem[]>(
       text: "Nieruchomości",
     },
     {
+      icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
+      path: { name: "Users" },
+      text: "Użytkownicy",
+    },
+    {
       icon: new URL("@/assets/img/icons/user.svg", import.meta.url).href,
       path: { name: "MyData" },
       text: "Moje dane",
     },
-  ].filter((item) => {
-    // filter allowed routes for role
-
-    let matchingRoute;
-    if ("name" in item.path) {
-      const routeName = item.path.name;
-      matchingRoute = allRoutes.find((route) => route.name === routeName);
-    }
-
-    if ("path" in item.path) {
-      const routePath = item.path.path;
-      matchingRoute = allRoutes.find((route) => route.path === routePath);
-    }
-
-    if (!matchingRoute) {
-      return false;
-    }
-
-    const allowedRoles = matchingRoute.meta.roles;
-    if (!allowedRoles) {
-      return true;
-    }
-    if (!Array.isArray(allowedRoles)) {
-      return false;
-    }
-
-    return allowedRoles.includes(user.value?.role);
-  }),
+  ].filter(isRoleAllowedInRoute),
 );
+
+function isRoleAllowedInRoute(item: NavigationItem): boolean {
+  let matchingRoute;
+  if ("name" in item.path) {
+    const routeName = item.path.name;
+    matchingRoute = allRoutes.find((route) => route.name === routeName);
+  }
+
+  if ("path" in item.path) {
+    const routePath = item.path.path;
+    matchingRoute = allRoutes.find((route) => route.path === routePath);
+  }
+
+  if (!matchingRoute) {
+    return false;
+  }
+
+  const allowedRoles = matchingRoute.meta.roles;
+  if (!allowedRoles) {
+    return true;
+  }
+  if (!Array.isArray(allowedRoles)) {
+    return false;
+  }
+
+  return allowedRoles.includes(user.value?.role);
+}
 
 const navigationSublist = ref<NavigationItem[]>([
   {
