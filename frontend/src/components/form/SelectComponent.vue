@@ -46,7 +46,7 @@ import chevronIconSVG from "@/assets/img/icons/chevron.svg";
 type InputProps = {
   id?: string;
   label: string;
-  placeholder?: string;
+  placeholder: string;
   name?: string;
   options: SelectOption[];
   errors: string[] | undefined;
