@@ -6,7 +6,7 @@ import catchAxiosError from "@/helpers/catch-axios-error.ts";
 
 export function editPropertyModal(
   propertyData: PropertyData | undefined,
-  callbackFn?: () => unknown,
+  callbackFn: () => unknown,
 ) {
   if (propertyData === undefined) {
     throw new Error("propertyData is undefined");

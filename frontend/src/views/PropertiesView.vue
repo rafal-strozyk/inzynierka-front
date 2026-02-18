@@ -87,7 +87,7 @@ const actions = ref<TableActions<TablePropertyData>>([
           });
           return;
         }
-        editPropertyModal(response.data.data);
+        editPropertyModal(response.data.data, fetchProperties);
       },
     },
   ],

@@ -10,7 +10,15 @@
       @submit.prevent="submitForm"
       class="w-full space-y-4 md:space-y-6 overflow-y-auto px-0.5 pb-1"
     >
-      <!--   TODO dodac select z wlascicielami jesli admin tworzy konto   -->
+      <div v-if="allowedRoles(['admin'])" class="flex max-md:flex-wrap justify-between gap-4">
+        <select-component
+          label="Właściciel nieruchomości"
+          :options="owners"
+          placeholder="Wybierz właściciela nieruchomości"
+          :errors="'owner_id' in errors ? errors.name : undefined"
+          v-model="form.owner_id"
+        />
+      </div>
       <div class="flex max-md:flex-wrap justify-between gap-4">
         <input-component
           id="name"
@@ -159,12 +167,14 @@ import SelectComponent from "@/components/form/SelectComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import { handleFetchErrors } from "@/composables/form.ts";
 import TextareaComponent from "@/components/form/TextareaComponent.vue";
+import allowedRoles from "@/helpers/allowed-roles.ts";
 
 type EditPropertyProps = { callback: () => unknown };
 
 const props = defineProps<EditPropertyProps>();
 
 const formTemplate = {
+  owner_id: "",
   name: "",
   city: "",
   street: "",
@@ -185,6 +195,7 @@ const modalStore = useModalStore();
 
 const isSending = ref(false);
 const form = ref({ ...formTemplate });
+const owners = ref([]);
 
 const formSent = ref(false);
 const errors = ref<FormErrors<typeof formTemplate>>({});
@@ -213,6 +224,10 @@ async function submitForm() {
   form.value = { ...formTemplate };
   isSending.value = false;
   formSent.value = true;
+}
+
+async function fetchOwners() {
+  //  TODO add fetch owners list logic
 }
 </script>
 
