@@ -1,5 +1,27 @@
 @use "fonts";
 
+$scrollbar-size: 8px;
+
+::-webkit-scrollbar {
+
+  width: $scrollbar-size;
+  height: $scrollbar-size;
+  border-radius: 9999px;
+
+  &-thumb,
+  &-track {
+    border-radius: 9999px;
+  }
+
+  &-thumb {
+    background-color: var(--color-gray-400);
+  }
+
+  &-track {
+    background-color: var(--color-gray-700);
+  }
+}
+
 body {
   font-family: "Inter", sans-serif;
 }

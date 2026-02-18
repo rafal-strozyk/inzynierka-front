@@ -8,7 +8,7 @@
     <form
       v-if="!formSent"
       @submit.prevent="submitForm"
-      class="w-full space-y-4 md:space-y-6 overflow-y-auto"
+      class="w-full space-y-4 md:space-y-6 overflow-y-auto px-0.5 pb-1"
     >
       <!--   TODO dodac select z wlascicielami jesli admin tworzy konto   -->
       <div class="flex max-md:flex-wrap justify-between gap-4">
@@ -65,7 +65,7 @@
         <input-component
           id="rent_cost"
           inputmode="decimal"
-          label="Czynsz"
+          label="Czynsz (zł)"
           placeholder="Wpisz czynsz"
           :errors="'rent_cost' in errors ? errors.rent_cost : undefined"
           v-model.number="form.rent_cost"
@@ -75,7 +75,7 @@
         <input-component
           id="utilities_cost"
           inputmode="decimal"
-          label="Koszt mediów"
+          label="Koszt mediów (zł)"
           placeholder="Wpisz koszt mediów"
           :errors="'utilities_cost' in errors ? errors.utilities_cost : undefined"
           v-model.number="form.utilities_cost"
@@ -83,7 +83,7 @@
         <input-component
           id="additional_costs"
           inputmode="decimal"
-          label="Dodatkowe koszta"
+          label="Dodatkowe koszta (zł)"
           placeholder="Wpisz dodatkowe koszta"
           :errors="'additional_costs' in errors ? errors.additional_costs : undefined"
           v-model.number="form.additional_costs"
@@ -93,7 +93,7 @@
         <input-component
           id="area_total"
           inputmode="decimal"
-          label="Powierzchnia"
+          label="Powierzchnia (m<sup>2</sup>)"
           placeholder="Wpisz powierzchnię"
           :errors="'area_total' in errors ? errors.area_total : undefined"
           v-model.number="form.area_total"
@@ -125,7 +125,7 @@
           v-model="form.rent_by_rooms"
         />
       </div>
-      <input-component
+      <textarea-component
         id="description"
         label="Opis"
         placeholder="Dodaj opis"
@@ -139,13 +139,9 @@
     </form>
     <div v-else>
       <p class="mb-4">Hasło zostało poprawnie zmienione.</p>
-      <button
-        @click.prevent="modalStore.resetModal()"
-        type="button"
-        class="w-full text-white focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 flex justify-center text-center dark:focus:ring-primary-800 py-2.5 bg-primary-600 hover:bg-primary-700 dark:bg-primary-600 dark:hover:bg-primary-700"
-      >
-        Zamknij
-      </button>
+      <div class="text-center">
+        <generic-button :callback="modalStore.resetModal" type="button"> Zamknij </generic-button>
+      </div>
     </div>
   </transition>
 </template>
@@ -162,6 +158,7 @@ import { type PropertyData, propertyFormOptions } from "@/types/properties.ts";
 import SelectComponent from "@/components/form/SelectComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import { handleFetchErrors } from "@/composables/form.ts";
+import TextareaComponent from "@/components/form/TextareaComponent.vue";
 
 type EditPropertyProps = PropertyData & { callback: () => unknown };
 
