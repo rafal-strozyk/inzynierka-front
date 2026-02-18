@@ -31,6 +31,9 @@ export default {
           950: "oklch(25.8% .092 26.042)",
         },
       },
+      screens: {
+        xs: "450px",
+      },
     },
   },
 };

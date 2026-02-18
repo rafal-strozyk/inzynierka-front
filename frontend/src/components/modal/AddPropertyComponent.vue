@@ -2,7 +2,7 @@
   <h2
     class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
   >
-    Edytuj dane nieruchomości: {{ props.name }}
+    Podaj dane nieruchomości
   </h2>
   <transition mode="out-in" name="fade">
     <form
@@ -10,7 +10,6 @@
       @submit.prevent="submitForm"
       class="w-full space-y-4 md:space-y-6 overflow-y-auto"
     >
-      <!--   TODO dodac select z wlascicielami jesli admin tworzy konto   -->
       <div class="flex max-md:flex-wrap justify-between gap-4">
         <input-component
           id="name"
@@ -158,16 +157,31 @@ import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { useModalStore } from "@/stores/modal.ts";
-import { type PropertyData, propertyFormOptions } from "@/types/properties.ts";
+import { propertyFormOptions } from "@/types/properties.ts";
 import SelectComponent from "@/components/form/SelectComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import { handleFetchErrors } from "@/composables/form.ts";
 
-type EditPropertyProps = PropertyData & { callback: () => unknown };
+type EditPropertyProps = { callback: () => unknown };
 
 const props = defineProps<EditPropertyProps>();
 
-const formTemplate = { ...props };
+const formTemplate = {
+  name: "",
+  city: "",
+  street: "",
+  street_number: "",
+  apartment_number: "",
+  status: "",
+  rent_cost: "",
+  utilities_cost: "",
+  additional_costs: "",
+  area_total: "",
+  bathrooms_count: "",
+  has_balcony: "",
+  rent_by_rooms: "",
+  description: "",
+};
 
 const modalStore = useModalStore();
 
@@ -186,7 +200,7 @@ async function submitForm() {
   isSending.value = true;
 
   const [, error] = await catchAxiosError<unknown, FormErrorResponse<typeof formTemplate>>(
-    window.API.put(`/properties/${props.id}`, toFormData(form.value)),
+    window.API.post(`/properties`, toFormData(form.value)),
   );
 
   if (error) {
