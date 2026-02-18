@@ -2,7 +2,9 @@
   <section class="max-w-7xl mx-auto">
     <div class="flex max-sm:flex-col justify-between items-center gap-4 mb-4">
       <h1 class="text-3xl font-bold mb-0">Nieruchomości</h1>
-      <generic-button :callback="addPropertyModal" iconPath="/src/assets/img/icons/property.svg"
+      <generic-button
+        :callback="addPropertyModal"
+        iconPath="/src/assets/img/icons/property_white.svg"
         >Dodaj nieruchomość</generic-button
       >
     </div>
