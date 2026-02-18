@@ -89,7 +89,6 @@ import { ref } from "vue";
 import DarkModeSwitcher from "@/components/DarkModeSwitcher.vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user.ts";
-import type { UserRoles } from "@/types/user.ts";
 
 const router = useRouter();
 const allRoutes = router.getRoutes();

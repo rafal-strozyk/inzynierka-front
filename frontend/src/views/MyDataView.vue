@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
-import { markRaw, onMounted, reactive, ref } from "vue";
+import { markRaw, onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useUserStore } from "@/stores/user.ts";
 import type { UserData } from "@/types/user.ts";
