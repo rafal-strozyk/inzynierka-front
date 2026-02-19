@@ -50,12 +50,12 @@ router.beforeEach(async (to) => {
     const userRole = currentUser?.role;
 
     // admin can go everywhere
-    if (userRole !== "admin") {
-      const allowedRoles = to.meta.roles as string[];
-      if (!userRole || !allowedRoles.includes(userRole)) {
-        return { name: "NotFound" };
-      }
+    // if (userRole !== "admin") {
+    const allowedRoles = to.meta.roles as string[];
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return { name: "NotFound" };
     }
+    // }
   }
 
   return true;

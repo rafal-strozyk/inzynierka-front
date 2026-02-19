@@ -44,6 +44,14 @@ const routes = [
         },
       },
       {
+        path: "tenants",
+        name: "Tenants",
+        component: () => import("@/views/TenantsView.vue"),
+        meta: {
+          roles: ["owner"],
+        },
+      },
+      {
         path: "user/:userId",
         name: "User",
         component: () => import("@/views/UserView.vue"),

@@ -122,6 +122,11 @@ const navigationItems = ref<NavigationItem[]>(
       text: "Użytkownicy",
     },
     {
+      icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
+      path: { name: "Tenants" },
+      text: "Najemcy",
+    },
+    {
       icon: new URL("@/assets/img/icons/user.svg", import.meta.url).href,
       path: { name: "MyData" },
       text: "Moje dane",
