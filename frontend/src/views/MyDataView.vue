@@ -137,7 +137,7 @@ async function fetchUserData() {
   isLoading.value = false;
 
   if (error) {
-    errors.value = "Couldn't find property data";
+    errors.value = "Nie udało się znaleźć danych użytkownika";
     return;
   }
 

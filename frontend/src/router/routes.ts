@@ -23,9 +23,31 @@ const routes = [
         },
       },
       {
+        path: "property/add",
+        name: "AddProperty",
+        component: () => import("@/views/PropertyFormView.vue"),
+        props: {
+          mode: "add",
+        },
+        meta: {
+          roles: ["admin", "owner"],
+        },
+      },
+      {
         path: "property/:propertyId",
         name: "Property",
         component: () => import("@/views/PropertyView.vue"),
+        meta: {
+          roles: ["admin", "owner"],
+        },
+      },
+      {
+        path: "property/:propertyId/edit",
+        name: "EditProperty",
+        component: () => import("@/views/PropertyFormView.vue"),
+        props: {
+          mode: "edit",
+        },
         meta: {
           roles: ["admin", "owner"],
         },

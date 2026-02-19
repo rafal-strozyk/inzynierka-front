@@ -3,7 +3,7 @@
     <div class="flex max-sm:flex-col justify-between items-center gap-4 mb-4">
       <h1 class="text-3xl font-bold mb-0">Nieruchomości</h1>
       <generic-button
-        :callback="addPropertyModal"
+        :callback="() => router.push({ name: 'AddProperty' })"
         iconPath="/src/assets/img/icons/property_white.svg"
         >Dodaj nieruchomość</generic-button
       >
@@ -14,19 +14,16 @@
 
 <script setup lang="ts">
 import TableComponent from "@/components/table/TableComponent.vue";
-import { markRaw, onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRouter } from "vue-router";
 import { type ColumnData, type TableActions, type TableMetaData } from "@/types/table.ts";
-import { deletePropertyModal, editPropertyModal } from "@/composables/properties.ts";
-import type { PropertyData, TablePropertyData } from "@/types/properties.ts";
-import { useModalStore } from "@/stores/modal.ts";
+import { deletePropertyModal } from "@/composables/properties.ts";
+import type { TablePropertyData } from "@/types/properties.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
-import AddPropertyComponent from "@/components/modal/AddPropertyComponent.vue";
 
 const router = useRouter();
-const modalStore = useModalStore();
 
 const queryParams = ref(getTableQueryParams());
 
@@ -70,24 +67,13 @@ const actions = ref<TableActions<TablePropertyData>>([
       },
     },
     {
-      type: "button",
+      type: "router-link",
       text: "Edytuj dane",
-      callbackFn: async (propertyData: TablePropertyData) => {
-        const [response, error] = await catchAxiosError<{
-          data: PropertyData;
-        }>(window.API.get(`/properties/${propertyData.id}`));
-
-        if (error) {
-          modalStore.setModal({
-            show: true,
-            type: "confirm",
-            status: "error",
-            title: "Wystąpił błąd",
-            body: "Nie udało się pobrać danych nieruchomości",
-          });
-          return;
-        }
-        editPropertyModal(response.data.data, fetchProperties);
+      to: (propertyId: TablePropertyData["id"]) => {
+        return {
+          name: "EditProperty",
+          params: { propertyId: propertyId },
+        };
       },
     },
   ],
@@ -107,17 +93,6 @@ const bypassLoading = ref(false);
 
 const data = ref<TablePropertyData[]>([]);
 const meta = ref<TableMetaData>();
-
-function addPropertyModal() {
-  modalStore.setModal({
-    type: "component",
-    show: true,
-    component: {
-      is: markRaw(AddPropertyComponent),
-      props: { callback: fetchProperties },
-    },
-  });
-}
 
 async function fetchProperties() {
   if (isLoading.value && !bypassLoading.value) {

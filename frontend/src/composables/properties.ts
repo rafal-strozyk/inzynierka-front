@@ -1,28 +1,6 @@
 import { useModalStore } from "@/stores/modal.ts";
-import { markRaw } from "vue";
-import EditPropertyComponent from "@/components/modal/EditPropertyComponent.vue";
 import type { PropertyData } from "@/types/properties.ts";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
-
-export function editPropertyModal(
-  propertyData: PropertyData | undefined,
-  callbackFn: () => unknown,
-) {
-  if (propertyData === undefined) {
-    throw new Error("propertyData is undefined");
-  }
-
-  const modalStore = useModalStore();
-
-  modalStore.setModal({
-    type: "component",
-    show: true,
-    component: {
-      is: markRaw(EditPropertyComponent),
-      props: { ...propertyData, callback: callbackFn },
-    },
-  });
-}
 
 export function deletePropertyModal(
   propertyData: Pick<PropertyData, "id" | "name">,

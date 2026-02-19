@@ -110,7 +110,7 @@
       <div class="flex gap-4">
         <generic-button
           iconPath="/src/assets/img/icons/edit.svg"
-          :callback="() => editPropertyModal(propertyData, fetchPropertyData)"
+          :callback="() => router.push({ name: 'EditProperty' })"
         >
           Edytuj dane
         </generic-button>
@@ -140,7 +140,7 @@ import type { PropertyData } from "@/types/properties.ts";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import GenericView from "@/views/GenericView.vue";
-import { deletePropertyModal, editPropertyModal } from "@/composables/properties.ts";
+import { deletePropertyModal } from "@/composables/properties.ts";
 import { isRouteParamValidNumber } from "@/composables/route.ts";
 
 const router = useRouter();
@@ -164,7 +164,7 @@ async function fetchPropertyData() {
   isLoading.value = false;
 
   if (error) {
-    errors.value = "Couldn't find property data";
+    errors.value = "Nie udało się znaleźć danych nieruchomości";
     return;
   }
 
