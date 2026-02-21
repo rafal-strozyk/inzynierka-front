@@ -1,7 +1,12 @@
 <template>
   <section class="max-w-7xl mx-auto">
-    <div>
-      <h1 class="text-3xl font-bold">Użytkownicy</h1>
+    <div class="flex max-sm:flex-col justify-between items-center gap-4 mb-4">
+      <h1 class="text-3xl font-bold mb-0">Najemcy</h1>
+      <generic-button
+        :callback="() => router.push({ name: 'AddUser' })"
+        iconPath="/src/assets/img/icons/users_white.svg"
+        >Dodaj najemcę</generic-button
+      >
     </div>
     <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
   </section>
@@ -17,6 +22,7 @@ import { useModalStore } from "@/stores/modal.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { roleDictionary } from "@/helpers/dictionary.ts";
+import GenericButton from "@/components/form/GenericButton.vue";
 
 const router = useRouter();
 const modalStore = useModalStore();
