@@ -37,7 +37,9 @@
         v-model="form.password_confirmation"
       />
       <errors-component :errors="'message' in errors ? errors.message : undefined" />
-      <button-submit :is-sending="isSending"> Potwierdź </button-submit>
+      <generic-button class="w-full" type="submit" :is-sending="isSending">
+        Potwierdź
+      </generic-button>
     </form>
     <div v-else>
       <p class="mb-4">Hasło zostało poprawnie zmienione.</p>
@@ -58,10 +60,10 @@ import { ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
-import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { useModalStore } from "@/stores/modal.ts";
 import { handleFetchErrors } from "@/composables/form.ts";
+import GenericButton from "@/components/form/GenericButton.vue";
 
 const formTemplate = {
   current_password: "",

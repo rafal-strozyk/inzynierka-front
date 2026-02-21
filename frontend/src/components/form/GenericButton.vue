@@ -2,7 +2,7 @@
   <button
     @click="props.callback?.()"
     :type="props.type"
-    class="cursor-pointer inline-flex w-full items-center justify-center rounded-lg px-5 text-sm font-medium text-white focus:outline-none focus:ring-4 xs:w-auto"
+    class="cursor-pointer inline-flex max-xs:w-full items-center justify-center rounded-lg px-5 text-sm font-medium text-white focus:outline-none focus:ring-4"
     :disabled="props.isSending"
     :class="[buttonTypeStyling[props.variant], isSending ? 'pointer-events-none py-1.5' : 'py-2.5']"
   >

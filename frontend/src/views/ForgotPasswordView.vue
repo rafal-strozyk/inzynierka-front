@@ -23,7 +23,9 @@
                 v-model="form.email"
               />
               <errors-component :errors="'message' in errors ? errors.message : undefined" />
-              <button-submit :is-sending="isSending"> Wyślij email </button-submit>
+              <generic-button class="w-full" type="submit" :is-sending="isSending">
+                Wyślij email
+              </generic-button>
             </form>
             <div v-else>
               <p class="mb-4">
@@ -50,9 +52,9 @@ import { ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
 import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
-import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { handleFetchErrors } from "@/composables/form.ts";
+import GenericButton from "@/components/form/GenericButton.vue";
 
 const formTemplate = {
   email: "",

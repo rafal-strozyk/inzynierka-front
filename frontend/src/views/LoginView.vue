@@ -45,7 +45,9 @@
                 >Zapomniałeś hasła?</router-link
               >
             </div>
-            <button-submit :is-sending="isSending"> Zaloguj się </button-submit>
+            <generic-button class="w-full" type="submit" :is-sending="isSending">
+              Zaloguj się
+            </generic-button>
           </form>
         </div>
       </div>
@@ -60,11 +62,11 @@ import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import toFormData from "@/helpers/to-form-data.ts";
 import { useRouter } from "vue-router";
 import type { FormErrorResponse, FormErrors } from "@/types/form.ts";
-import ButtonSubmit from "@/components/form/ButtonSubmit.vue";
 import CheckboxComponent from "@/components/form/CheckboxComponent.vue";
 import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import type { UserData } from "@/types/user.ts";
 import { handleFetchErrors } from "@/composables/form.ts";
+import GenericButton from "@/components/form/GenericButton.vue";
 
 const router = useRouter();
 
