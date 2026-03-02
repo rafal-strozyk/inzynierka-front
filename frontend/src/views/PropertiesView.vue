@@ -112,6 +112,7 @@ async function fetchProperties() {
   );
 
   if (error) {
+    isLoading.value = false;
     return;
   }
   meta.value = response.data.meta;

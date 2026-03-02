@@ -117,6 +117,7 @@ async function fetchUsers() {
   );
 
   if (error) {
+    isLoading.value = false;
     return;
   }
 
