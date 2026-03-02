@@ -38,7 +38,7 @@ import type { ModalCallbackType } from "@/types/modal.ts";
 type GenericButtonProps = {
   type?: "button" | "submit" | "reset";
   variant?: ModalCallbackType;
-  iconPath?: `/${string}`;
+  iconPath?: string;
   isSending?: boolean;
   callback?: () => unknown;
 };

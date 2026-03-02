@@ -4,7 +4,7 @@
       <h1 class="text-3xl font-bold mb-0">Nieruchomości</h1>
       <generic-button
         :callback="() => router.push({ name: 'AddProperty' })"
-        iconPath="/src/assets/img/icons/property_white.svg"
+        :iconPath="PropertyIconSVG"
         >Dodaj nieruchomość</generic-button
       >
     </div>
@@ -22,6 +22,7 @@ import { deletePropertyModal } from "@/composables/properties.ts";
 import type { TablePropertyData } from "@/types/properties.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
+import PropertyIconSVG from "@/assets/img/icons/property_white.svg";
 
 const router = useRouter();
 

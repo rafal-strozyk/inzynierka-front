@@ -2,9 +2,7 @@
   <section class="max-w-7xl mx-auto">
     <div class="flex max-sm:flex-col justify-between items-center gap-4 mb-4">
       <h1 class="text-3xl font-bold mb-0">Użytkownicy</h1>
-      <generic-button
-        :callback="() => router.push({ name: 'AddUser' })"
-        iconPath="/src/assets/img/icons/users_white.svg"
+      <generic-button :callback="() => router.push({ name: 'AddUser' })" :iconPath="UserIconSVG"
         >Dodaj użytkownika</generic-button
       >
     </div>
@@ -23,6 +21,7 @@ import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { roleDictionary } from "@/helpers/dictionary.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
+import UserIconSVG from "@/assets/img/icons/users_white.svg";
 
 const router = useRouter();
 const modalStore = useModalStore();

@@ -109,14 +109,14 @@
       </div>
       <div class="flex gap-4">
         <generic-button
-          iconPath="/src/assets/img/icons/edit.svg"
+          :iconPath="EditIconSVG"
           :callback="() => router.push({ name: 'EditProperty' })"
         >
           Edytuj dane
         </generic-button>
         <generic-button
           variant="danger"
-          iconPath="/src/assets/img/icons/bin.svg"
+          :iconPath="BinIconSVG"
           :callback="
             () =>
               propertyData &&
@@ -142,6 +142,8 @@ import GenericButton from "@/components/form/GenericButton.vue";
 import GenericView from "@/views/GenericView.vue";
 import { deletePropertyModal } from "@/composables/properties.ts";
 import { isRouteParamValidNumber } from "@/composables/route.ts";
+import EditIconSVG from "@/assets/img/icons/edit.svg";
+import BinIconSVG from "@/assets/img/icons/bin.svg";
 
 const router = useRouter();
 const isLoading = ref(false);

@@ -86,7 +86,7 @@
           </div>
         </div>
         <!--        <generic-button-->
-        <!--          iconPath="/src/assets/img/icons/edit.svg"-->
+        <!--          :iconPath="EditIconSVG"-->
         <!--          :callback="-->
         <!--            () =>-->
         <!--              modal.setModal({-->
@@ -113,6 +113,7 @@ import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
 import { roleDictionary } from "@/helpers/dictionary.ts";
 import { isRouteParamValidNumber } from "@/composables/route.ts";
+import EditIconSVG from "@/assets/img/icons/edit.svg";
 
 const isLoading = ref(false);
 const errors = ref();

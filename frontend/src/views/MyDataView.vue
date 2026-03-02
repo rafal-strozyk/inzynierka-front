@@ -85,7 +85,7 @@
           </div>
         </div>
         <generic-button
-          iconPath="/src/assets/img/icons/edit.svg"
+          :iconPath="EditIconSVG"
           :callback="
             () =>
               modal.setModal({
@@ -115,6 +115,7 @@ import { useModalStore } from "@/stores/modal.ts";
 import ChangePasswordComponent from "@/components/modal/ChangePasswordComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import { roleDictionary } from "@/helpers/dictionary.ts";
+import EditIconSVG from "@/assets/img/icons/edit.svg";
 
 const modal = useModalStore();
 const userStore = useUserStore();
