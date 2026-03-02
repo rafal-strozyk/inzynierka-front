@@ -297,7 +297,6 @@ onMounted(async () => {
   void fetchOwners();
 
   if (props.mode === "add") {
-    form.value = { ...formTemplate };
     return;
   }
 
