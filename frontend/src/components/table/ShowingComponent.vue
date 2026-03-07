@@ -1,10 +1,10 @@
 <template>
   <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-    Showing
+    Wyświetlane
     <span class="font-semibold text-gray-900 dark:text-white"
       >{{ meta?.from || 0 }}-{{ meta?.to || 0 }}</span
     >
-    of
+    z
     <span class="font-semibold text-gray-900 dark:text-white">{{ meta?.total || 0 }}</span>
   </span>
 </template>

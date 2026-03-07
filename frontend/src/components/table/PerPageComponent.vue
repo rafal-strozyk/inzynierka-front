@@ -10,7 +10,7 @@
         v-model="model"
       >
         <option v-for="pageSize in pageSizes" :key="pageSize" :value="pageSize">
-          {{ pageSize }} per page
+          {{ pageSize }} na strone
         </option>
       </select>
       <svg
