@@ -43,6 +43,7 @@
       <ul class="space-y-2">
         <li v-for="(item, key) in navigationItems" :key>
           <router-link
+            v-if="item.type === 'route'"
             @click.prevent="open = false"
             :to="item.path"
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
@@ -50,11 +51,22 @@
             <inline-svg :src="item.icon" />
             <span class="ml-3">{{ item.text }}</span>
           </router-link>
+          <a
+            v-else-if="item.type === 'link'"
+            @click="open = false"
+            :href="item.path"
+            :target="item.target"
+            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
+          >
+            <inline-svg :src="item.icon" />
+            <span class="ml-3">{{ item.text }}</span>
+          </a>
         </li>
       </ul>
       <ul class="pt-5 mt-5 space-y-2 border-t border-gray-200 dark:border-gray-700">
         <li v-for="(item, key) in navigationSublist" :key>
           <router-link
+            v-if="item.type === 'route'"
             @click.prevent="open = false"
             :to="item.path"
             class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
@@ -62,6 +74,16 @@
             <inline-svg :src="item.icon" />
             <span class="ml-3">{{ item.text }}</span>
           </router-link>
+          <a
+            v-else-if="item.type === 'link'"
+            @click="open = false"
+            :href="item.path"
+            :target="item.target"
+            class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-white group"
+          >
+            <inline-svg :src="item.icon" />
+            <span class="ml-3">{{ item.text }}</span>
+          </a>
         </li>
       </ul>
     </div>
@@ -94,47 +116,70 @@ const router = useRouter();
 const allRoutes = router.getRoutes();
 const open = ref(false);
 
-type NavigationItem = {
+type NavigationItemBase = {
   text: string;
-  path: { name: string } | { path: string };
   icon: string;
 };
+
+type NavigationRouteItem = {
+  path: { name: string } | { path: string };
+  type: "route";
+};
+
+type NavigationLinkItem = {
+  path: string;
+  type: "link";
+  target?: "_self" | "_blank" | "_parent" | "_top";
+};
+
+type NavigationItem = NavigationItemBase & (NavigationRouteItem | NavigationLinkItem);
 
 const userStore = useUserStore();
 const user = userStore.getUser();
 const logout = userStore.logoutUser;
 
 const navigationItems = ref<NavigationItem[]>(
-  [
-    {
-      icon: new URL("@/assets/img/icons/dashboard.svg", import.meta.url).href,
-      path: { name: "Dashboard" },
-      text: "Panel główny",
-    },
-    {
-      icon: new URL("@/assets/img/icons/property.svg", import.meta.url).href,
-      path: { name: "Properties" },
-      text: "Nieruchomości",
-    },
-    {
-      icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
-      path: { name: "Users" },
-      text: "Użytkownicy",
-    },
-    {
-      icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
-      path: { name: "Tenants" },
-      text: "Najemcy",
-    },
-    {
-      icon: new URL("@/assets/img/icons/user.svg", import.meta.url).href,
-      path: { name: "MyData" },
-      text: "Moje dane",
-    },
-  ].filter(isRoleAllowedInRoute),
+  (
+    [
+      {
+        type: "route",
+        icon: new URL("@/assets/img/icons/dashboard.svg", import.meta.url).href,
+        path: { name: "Dashboard" },
+        text: "Panel główny",
+      },
+      {
+        type: "route",
+        icon: new URL("@/assets/img/icons/property.svg", import.meta.url).href,
+        path: { name: "Properties" },
+        text: "Nieruchomości",
+      },
+      {
+        type: "route",
+        icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
+        path: { name: "Users" },
+        text: "Użytkownicy",
+      },
+      {
+        type: "route",
+        icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
+        path: { name: "Tenants" },
+        text: "Najemcy",
+      },
+      {
+        type: "route",
+        icon: new URL("@/assets/img/icons/user.svg", import.meta.url).href,
+        path: { name: "MyData" },
+        text: "Moje dane",
+      },
+    ] satisfies NavigationItem[]
+  ).filter(isRoleAllowedInRoute),
 );
 
 function isRoleAllowedInRoute(item: NavigationItem): boolean {
+  if (item.type === "link") {
+    return true;
+  }
+
   let matchingRoute;
   if ("name" in item.path) {
     const routeName = item.path.name;
@@ -163,9 +208,11 @@ function isRoleAllowedInRoute(item: NavigationItem): boolean {
 
 const navigationSublist = ref<NavigationItem[]>([
   {
+    type: "link",
     icon: new URL("@/assets/img/icons/docs.svg", import.meta.url).href,
-    path: { path: "docs" },
+    path: "/docs",
     text: "Dokumentacja",
+    target: "_blank",
   },
 ]);
 </script>
