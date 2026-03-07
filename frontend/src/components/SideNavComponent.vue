@@ -155,6 +155,12 @@ const navigationItems = ref<NavigationItem[]>(
       },
       {
         type: "route",
+        icon: new URL("@/assets/img/icons/tickets.svg", import.meta.url).href,
+        path: { name: "Tickets" },
+        text: "Zgłoszenia",
+      },
+      {
+        type: "route",
         icon: new URL("@/assets/img/icons/users.svg", import.meta.url).href,
         path: { name: "Users" },
         text: "Użytkownicy",
