@@ -1,6 +1,6 @@
 <template>
   <div
-    class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0"
+    class="flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 shrink-0"
   >
     <form class="relative w-32 ml-auto md:mx-auto">
       <label :for="`per-page-${affix}`" class="sr-only">Select an option</label>

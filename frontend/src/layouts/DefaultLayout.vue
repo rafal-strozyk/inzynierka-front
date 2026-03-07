@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-dvh px-4 py-4">
     <side-nav-component />
-    <main class="md:ml-64 max-md:pt-2">
+    <main class="lg:ml-64 max-lg:pt-2">
       <router-view v-slot="{ Component }">
         <transition name="fade" mode="out-in">
           <component :is="Component" />

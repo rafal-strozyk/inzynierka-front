@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto">
-    <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+    <div class="bg-white dark:bg-gray-800 relative shadow-md rounded-lg overflow-hidden">
       <div
         class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4"
       >
@@ -8,7 +8,7 @@
         <search-component v-model="queryParams.search" />
         <showing-component :meta />
       </div>
-      <div class="overflow-x-auto">
+      <div class="lg:overflow-x-auto">
         <div class="w-fit py-5 mx-auto overflow-hidden" v-if="isLoading">
           <svg
             aria-hidden="true"
@@ -27,9 +27,9 @@
             />
           </svg>
         </div>
-        <table v-else class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table v-else class="w-full text-sm text-left text-gray-500 dark:text-gray-300">
           <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            class="max-lg:hidden text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
           >
             <tr>
               <th :key="0" scope="col" class="px-4 py-3 font-medium text-gray-900 dark:text-white">
@@ -48,10 +48,10 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="max-lg:grid sm:grid-cols-2 md:grid-cols-3 gap-4 max-lg:px-4">
             <tr class="border-b dark:border-gray-700" v-if="data.length <= 0">
               <td
-                class="text-base text-white text-center py-3 px-2"
+                class="max-lg:block text-base text-white text-center py-3 px-2"
                 :colspan="$props.columns.length + 2"
               >
                 Brak danych do wyświetlenia.
@@ -61,31 +61,34 @@
               v-else
               v-for="(row, row_index) in data"
               :key="row_index"
-              class="transition border-b dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600"
+              class="transition lg:border-b dark:border-gray-700 max-lg:bg-gray-100 lg:hover:bg-gray-100 dark:max-lg:bg-gray-700 dark:lg:hover:bg-gray-700 max-lg:block max-lg:rounded-lg max-lg:shadow-md max-lg:hover:shadow-2xl max-lg:hover:-translate-y-1.5"
             >
               <th
                 scope="row"
-                class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                class="px-4 py-3 font-medium text-gray-900 lg:whitespace-nowrap dark:text-white max-lg:block"
               >
+                <strong class="lg:hidden"> {{ $props.columns[0]?.text }}: </strong>
+
                 {{ row.name }}
               </th>
               <td
                 v-for="(column, index) in $props.columns?.slice(1, $props.columns.length)"
                 :key="index"
-                class="px-4 py-3"
+                class="px-4 max-lg:pt-0 py-3 max-lg:block max-lg:wrap-break-word"
               >
+                <strong class="lg:hidden"> {{ column.text }}: </strong>
                 {{
                   typeof column.label === "string" && column.label.startsWith("has")
                     ? column.label
                       ? "✅"
                       : "❌"
-                    : row[column.label]
+                    : row[column.label] || "---"
                 }}
               </td>
               <td class="px-4 py-3">
                 <button
                   @click.prevent="toggleActionsDropdown(row_index)"
-                  class="cursor-pointer inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg dark:text-gray-400 dark:hover:text-gray-100"
+                  class="cursor-pointer inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg dark:text-gray-300 dark:hover:text-gray-100"
                   type="button"
                 >
                   <svg
@@ -104,8 +107,7 @@
                 <transition mode="out-in" name="fade">
                   <div
                     v-if="openedActionsIndex === row_index && data[row_index]"
-                    class="absolute z-10 w-44 bg-white rounded divide-y divide-gray-200 border border-gray-300 shadow dark:bg-gray-700 dark:divide-gray-600 dark:border-gray-500"
-                    style="transform: translateX(calc(-100% - 8px)) translateY(-52px)"
+                    class="absolute translate-x-10 lg:-translate-x-full -translate-y-9 lg:-ml-2 z-10 w-44 bg-white rounded divide-y divide-gray-200 border border-gray-300 shadow dark:bg-gray-700 dark:divide-gray-600 dark:border-gray-500"
                   >
                     <ul
                       v-for="(actionsGroup, index) in props.actions"
@@ -140,7 +142,7 @@
         </table>
       </div>
       <nav
-        class="flex flex-col md:flex-row justify-end gap-x-3 items-start md:items-center space-y-3 md:space-y-0 p-4"
+        class="flex flex-wrap justify-center md:justify-end gap-x-3 items-start md:items-center space-y-3 md:space-y-0 p-4"
         aria-label="Table navigation"
       >
         <per-page-component v-model="queryParams.per_page" />

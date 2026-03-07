@@ -2,7 +2,7 @@
   <button
     @click.prevent="open = !open"
     aria-controls="drawer-navigation"
-    class="p-2 -ml-2 -mt-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+    class="p-2 -ml-2 -mt-2 text-gray-600 rounded-lg cursor-pointer lg:hidden hover:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 dark:focus:bg-gray-700 focus:ring-2 focus:ring-gray-100 dark:focus:ring-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
   >
     <svg
       aria-hidden="true"
@@ -34,7 +34,7 @@
   </button>
 
   <aside
-    class="fixed top-0 left-0 z-40 w-64 h-dvh pt-0 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+    class="fixed top-0 left-0 z-40 w-64 h-dvh pt-0 transition-transform bg-white border-r border-gray-200 lg:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     :class="{ '-translate-x-full': !open }"
     aria-label="Sidenav"
     id="drawer-navigation"
@@ -102,7 +102,7 @@
   <div
     v-show="open"
     @click.prevent="open = false"
-    class="md:hidden bg-gray-900/50 dark:bg-opacity-80 fixed inset-0 z-30"
+    class="lg:hidden bg-gray-900/50 dark:bg-opacity-80 fixed inset-0 z-30"
   ></div>
 </template>
 
