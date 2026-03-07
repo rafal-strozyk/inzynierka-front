@@ -1,7 +1,7 @@
-import type { UserRoles } from "@/types/user.ts";
+import { userRoles } from "@/types/user.ts";
 import { useUserStore } from "@/stores/user.ts";
 
-export default (roles: Array<UserRoles>): boolean => {
+export default (roles: Array<(typeof userRoles)[number]>): boolean => {
   const userStore = useUserStore();
   const userRole = userStore.getUser().value?.role;
   return userRole ? roles.includes(userRole) : false;
