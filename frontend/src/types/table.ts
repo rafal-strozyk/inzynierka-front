@@ -6,20 +6,20 @@ export type ColumnData<T> = {
   text: string;
 };
 
-type TableAction<CallbackData> = (
+type TableAction<T, K extends IdentifierOf<T>> = (
   | {
       type: "router-link";
-      to: (id: number) => string | object;
+      to: (arg: T[K]) => string | object;
     }
   | {
       type: "button";
-      callbackFn: (data: CallbackData) => unknown | Promise<unknown>;
+      callbackFn: (data: T) => unknown | Promise<unknown>;
     }
 ) & {
   text: string;
 };
 
-export type TableActions<T> = Array<Array<TableAction<T>>>;
+export type TableActions<T, K extends IdentifierOf<T>> = Array<Array<TableAction<T, K>>>;
 
 export type TableMetaData = {
   current_page: number;
@@ -36,3 +36,7 @@ export type TableMetaData = {
   to: number | null;
   total: number | null;
 };
+
+export type IdentifierOf<T> = {
+  [K in keyof T]: T[K] extends string | number ? K : never;
+}[keyof T];

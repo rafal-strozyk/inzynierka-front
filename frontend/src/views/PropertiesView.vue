@@ -8,7 +8,15 @@
         >Dodaj nieruchomość</generic-button
       >
     </div>
-    <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
+    <table-component
+      v-model:queryParams="queryParams"
+      :data
+      :columns
+      identifier="id"
+      :actions
+      :meta
+      :is-loading
+    />
   </section>
 </template>
 
@@ -55,7 +63,7 @@ const columns = ref<ColumnData<TablePropertyData>[]>([
   },
 ] as const);
 
-const actions = ref<TableActions<TablePropertyData>>([
+const actions = ref<TableActions<TablePropertyData, "id">>([
   [
     {
       type: "router-link",

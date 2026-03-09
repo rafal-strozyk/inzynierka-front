@@ -117,7 +117,7 @@
                       <li v-for="action in actionsGroup" :key="action.text">
                         <router-link
                           v-if="action.type === 'router-link'"
-                          :to="action.to(data[row_index]?.id)"
+                          :to="action.to(data[row_index]?.[identifier])"
                           class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600"
                           >{{ action.text }}</router-link
                         >
@@ -154,7 +154,10 @@
 
 <script
   setup
-  generic="DataType extends Record<string, string | number | boolean | undefined> & { id: number }"
+  generic="
+    DataType extends Record<string, string | number | boolean | undefined>,
+    IdKey extends IdentifierOf<DataType>
+  "
   lang="ts"
 >
 import { ref } from "vue";
@@ -168,16 +171,18 @@ import PerPageComponent from "@/components/table/PerPageComponent.vue";
 import SearchComponent from "@/components/table/SearchComponent.vue";
 import PaginationComponent from "@/components/table/PaginationComponent.vue";
 import ShowingComponent from "@/components/table/ShowingComponent.vue";
+import type { IdentifierOf } from "@/types/table.ts";
 
-type TableProps<T> = {
+type TableProps<T, K extends IdentifierOf<T>> = {
   data: T[];
   columns: ColumnData<T>[];
-  actions: TableActions<T>;
+  actions: TableActions<T, K>;
+  identifier: K;
   meta: TableMetaData | undefined;
   isLoading: boolean;
 };
 
-const props = defineProps<TableProps<DataType>>();
+const props = defineProps<TableProps<DataType, IdKey>>();
 
 const queryParams = defineModel<{
   search: string;
@@ -185,7 +190,7 @@ const queryParams = defineModel<{
   per_page: PageSizesUnion;
 }>("queryParams", { required: true });
 
-const openedActionsIndex = ref<keyof TableProps<DataType>["data"] | null>(null);
+const openedActionsIndex = ref<keyof TableProps<DataType, IdKey>["data"] | null>(null);
 
 function toggleActionsDropdown(index: number) {
   if (openedActionsIndex.value === undefined || openedActionsIndex.value !== index) {

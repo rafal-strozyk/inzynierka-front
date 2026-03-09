@@ -6,7 +6,15 @@
         >Dodaj najemcę</generic-button
       >
     </div>
-    <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
+    <table-component
+      v-model:queryParams="queryParams"
+      :data
+      :columns
+      identifier="username"
+      :actions
+      :meta
+      :is-loading
+    />
   </section>
 </template>
 
@@ -43,15 +51,15 @@ const columns = ref<ColumnData<TableUserData>[]>([
   },
 ] as const);
 
-const actions = ref<TableActions<TableUserData>>([
+const actions = ref<TableActions<TableUserData, "username">>([
   [
     {
       type: "router-link",
       text: "Podgląd",
-      to: (userId: TableUserData["id"]) => {
+      to: (username: TableUserData["username"]) => {
         return {
           name: "Tenant",
-          params: { userId },
+          params: { username },
         };
       },
     },
