@@ -47,7 +47,7 @@
               <h2
                 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl mb-0"
               >
-                {{ userData.first_name }} {{ userData.last_name }} -
+                {{ userData.name }} {{ userData.surname }} -
                 {{ roleDictionary[userData.role] }}
               </h2>
             </div>
