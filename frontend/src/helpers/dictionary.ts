@@ -1,4 +1,4 @@
-export const roleDictionary = {
+export const ROLES_DICTIONARY = {
   tenant: "Najemca",
   owner: "Właściciel",
   admin: "Admin",

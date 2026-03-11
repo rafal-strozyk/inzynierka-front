@@ -48,7 +48,7 @@
                 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl mb-0"
               >
                 {{ userData.name }} {{ userData.surname }} -
-                {{ roleDictionary[userData.role] }}
+                {{ ROLES_DICTIONARY[userData.role] }}
               </h2>
             </div>
             <dl>
@@ -111,7 +111,7 @@ import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import { onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
-import { roleDictionary } from "@/helpers/dictionary.ts";
+import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import { isRouteParamValidNumber } from "@/composables/route.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
 

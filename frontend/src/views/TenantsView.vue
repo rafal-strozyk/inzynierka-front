@@ -27,7 +27,7 @@ import { type ColumnData, type TableActions, type TableMetaData } from "@/types/
 import { useModalStore } from "@/stores/modal.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
-import { roleDictionary } from "@/helpers/dictionary.ts";
+import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
 import UserIconSVG from "@/assets/img/icons/users_white.svg";
 
@@ -136,7 +136,7 @@ async function fetchUsers() {
 
   data.value = response.data.data.map((user) => ({
     ...user,
-    role: roleDictionary[user.role],
+    role: ROLES_DICTIONARY[user.role],
   }));
   isLoading.value = false;
 

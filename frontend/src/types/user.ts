@@ -1,12 +1,12 @@
-import { roleDictionary } from "@/helpers/dictionary.ts";
-export const userRoles = ["admin", "owner", "tenant"] as const;
+import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
+export const USER_ROLES = ["admin", "owner", "tenant"] as const;
 
 export type UserData = {
   name: string;
   surname: string;
   username: string;
   email: string;
-  role: (typeof userRoles)[number];
+  role: (typeof USER_ROLES)[number];
   email_verified_at: string;
   created_at: string;
   updated_at: string;
@@ -22,5 +22,5 @@ type TableUserDataKeys = "username" | "name" | "email" | "phone";
 export type TableUserResponse = Pick<UserData, TableUserDataKeys | "role">;
 
 export type TableUserData = Pick<UserData, TableUserDataKeys> & {
-  role: (typeof roleDictionary)[(typeof userRoles)[number]];
+  role: (typeof ROLES_DICTIONARY)[(typeof USER_ROLES)[number]];
 };

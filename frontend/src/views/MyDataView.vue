@@ -47,7 +47,7 @@
               <h2
                 class="flex items-center text-xl font-bold leading-none text-gray-900 dark:text-white sm:text-2xl mb-0"
               >
-                {{ user.name }} {{ user.surname }} - {{ roleDictionary[user.role] }}
+                {{ user.name }} {{ user.surname }} - {{ ROLES_DICTIONARY[user.role] }}
               </h2>
             </div>
             <dl>
@@ -114,7 +114,7 @@ import type { UserData } from "@/types/user.ts";
 import { useModalStore } from "@/stores/modal.ts";
 import ChangePasswordComponent from "@/components/modal/ChangePasswordComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
-import { roleDictionary } from "@/helpers/dictionary.ts";
+import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
 
 const modal = useModalStore();
