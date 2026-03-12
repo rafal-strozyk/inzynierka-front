@@ -15,3 +15,16 @@ export function isRouteParamValidNumber(
   }
   return [parsedrouteParam, undefined];
 }
+
+export function isRouteParamValidString(
+  paramName: string,
+): [undefined, string] | [string, undefined] {
+  const router = useRouter();
+
+  const routeParam = router.currentRoute.value.params[paramName];
+  if (Array.isArray(routeParam) || routeParam === undefined) {
+    return [undefined, "Invalid property ID"];
+  }
+
+  return [routeParam, undefined];
+}

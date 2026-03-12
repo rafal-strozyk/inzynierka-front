@@ -141,7 +141,7 @@ import ErrorsComponent from "@/components/form/ErrorsComponent.vue";
 import GenericButton from "@/components/form/GenericButton.vue";
 import GenericView from "@/views/GenericView.vue";
 import { deletePropertyModal } from "@/composables/properties.ts";
-import { isRouteParamValidNumber } from "@/composables/route.ts";
+import { isRouteParamValidNumber } from "@/helpers/route.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
 import BinIconSVG from "@/assets/img/icons/bin.svg";
 
