@@ -2,9 +2,13 @@
   <button
     @click="props.callback?.()"
     :type="props.type"
-    class="cursor-pointer inline-flex max-xs:w-full items-center justify-center rounded-lg px-5 text-sm font-medium text-white focus:outline-none focus:ring-4"
-    :disabled="props.isSending"
-    :class="[buttonTypeStyling[props.variant], isSending ? 'pointer-events-none py-1.5' : 'py-2.5']"
+    class="inline-flex max-xs:w-full items-center justify-center rounded-lg px-5 text-sm font-medium text-white focus:outline-none focus:ring-4"
+    :disabled="props.isSending || disabled"
+    :class="[
+      buttonTypeStyling[props.variant],
+      isSending ? 'pointer-events-none py-1.5' : 'py-2.5',
+      props.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer',
+    ]"
   >
     <template v-if="isSending">
       <svg
@@ -40,16 +44,17 @@ type GenericButtonProps = {
   variant?: ModalCallbackType;
   iconPath?: string;
   isSending?: boolean;
+  disabled?: boolean;
   callback?: () => unknown;
 };
 
 const buttonTypeStyling = {
   primary:
-    "bg-primary-700 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800",
+    "bg-primary-700 not-disabled:hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:not-disabled:hover:bg-primary-700 dark:focus:ring-primary-800",
   ghost:
-    "bg-gray-700 hover:bg-gray-800 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800",
+    "bg-gray-700 not-disabled:hover:bg-gray-800 focus:ring-gray-300 dark:bg-gray-600 dark:not-disabled:hover:bg-gray-700 dark:focus:ring-gray-800",
   danger:
-    "bg-danger-700 hover:bg-danger-800 focus:ring-danger-300 dark:bg-danger-600 dark:hover:bg-danger-700 dark:focus:ring-danger-800",
+    "bg-danger-700 not-disabled:hover:bg-danger-800 focus:ring-danger-300 dark:bg-danger-600 dark:not-disabled:hover:bg-danger-700 dark:focus:ring-danger-800",
 } satisfies Record<ModalCallbackType, string>;
 
 const props = withDefaults(defineProps<GenericButtonProps>(), {

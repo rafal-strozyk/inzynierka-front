@@ -53,6 +53,7 @@
           placeholder="Wpisz imię"
           :errors="'name' in errors ? errors.name : undefined"
           v-model="form.name"
+          :disabled
         />
         <input-component
           id="surname"
@@ -61,6 +62,7 @@
           placeholder="Wpisz nazwisko"
           :errors="'surname' in errors ? errors.surname : undefined"
           v-model="form.surname"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -71,6 +73,7 @@
           placeholder="Wpisz nazwę użytkownika"
           :errors="'username' in errors ? errors.username : undefined"
           v-model="form.username"
+          :disabled
         />
         <input-component
           id="email"
@@ -79,6 +82,7 @@
           placeholder="Wpisz adres email"
           :errors="'email' in errors ? errors.email : undefined"
           v-model="form.email"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -89,6 +93,7 @@
           placeholder="Wpisz adres"
           :errors="'address' in errors ? errors.address : undefined"
           v-model="form.address"
+          :disabled
         />
         <input-component
           id="postal_code"
@@ -97,6 +102,7 @@
           placeholder="Wpisz kod pocztowy"
           :errors="'postal_code' in errors ? errors.postal_code : undefined"
           v-model="form.postal_code"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -107,6 +113,7 @@
           placeholder="Wpisz datę urodzenia"
           :errors="'birth_date' in errors ? errors.birth_date : undefined"
           v-model="form.birth_date"
+          :disabled
         />
         <input-component
           id="pesel"
@@ -115,6 +122,7 @@
           placeholder="Wpisz PESEL"
           :errors="'pesel' in errors ? errors.pesel : undefined"
           v-model="form.pesel"
+          :disabled
         />
       </div>
       <div
@@ -128,11 +136,12 @@
           placeholder="Wpisz hasło"
           :errors="'password' in errors ? errors.password : undefined"
           v-model="form.password"
+          :disabled
         />
       </div>
       <errors-component :errors="'message' in errors ? errors.message : undefined" />
       <div class="flex justify-center">
-        <generic-button type="submit" :is-sending="isSending">
+        <generic-button type="submit" :is-sending="isSending" :disabled>
           {{
             props.mode === "add"
               ? `Utwórz ${isMyRole(["admin"]) ? "użytkownika" : "najemcę"}`
@@ -197,6 +206,7 @@ const owners = ref([]);
 const roleOptions = ref(Object.entries(ROLES_DICTIONARY).map(([value, text]) => ({ value, text })));
 
 const errors = ref<FormErrors<typeof formTemplate>>({});
+const disabled = ref(false);
 
 function renderTitleText() {
   if (props.mode === "add") {
@@ -263,6 +273,7 @@ async function fetchUserData() {
     errors.value = {
       message: `Nie udało się znaleźć danych ${isMyRole(["admin"]) ? "użytkownika" : "najemcy"}.`,
     };
+    disabled.value = true;
     return;
   }
 
@@ -275,9 +286,10 @@ onMounted(async () => {
     return;
   }
 
-  const [usernameParam, error] = isRouteParamValidString("username");
+  const [usernameParam, error] = isRouteParamValidString("tenantId");
   if (error !== undefined) {
     errors.value = { message: error };
+    disabled.value = true;
     return;
   }
 

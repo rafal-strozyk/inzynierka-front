@@ -1,8 +1,8 @@
 <template>
   <section class="max-w-7xl mx-auto">
-    <a
-      href="javascript:history.back()"
-      class="flex items-center gap-2 transition hover:underline hover:opacity-100 opacity-70 w-fit mb-2"
+    <button
+      @click="router.go(-1)"
+      class="cursor-pointer flex items-center gap-2 transition hover:underline hover:opacity-100 opacity-70 w-fit mb-2"
     >
       <svg
         class="size-6 inline-block"
@@ -22,11 +22,15 @@
         />
       </svg>
       Wstecz
-    </a>
+    </button>
     <slot></slot>
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+</script>
 
 <style scoped></style>

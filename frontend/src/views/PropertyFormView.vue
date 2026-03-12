@@ -33,6 +33,7 @@
           placeholder="Wybierz właściciela nieruchomości"
           :errors="'owner_id' in errors ? errors.owner_id : undefined"
           v-model="form.owner_id"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -43,6 +44,7 @@
           placeholder="Wpisz nazwę"
           :errors="'name' in errors ? errors.name : undefined"
           v-model="form.name"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -52,6 +54,7 @@
           placeholder="Wpisz miasto"
           :errors="'city' in errors ? errors.city : undefined"
           v-model="form.city"
+          :disabled
         />
         <input-component
           id="street"
@@ -59,6 +62,7 @@
           placeholder="Wpisz ulicę"
           :errors="'street' in errors ? errors.street : undefined"
           v-model="form.street"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -68,6 +72,7 @@
           placeholder="Wpisz numer domu"
           :errors="'street_number' in errors ? errors.street_number : undefined"
           v-model="form.street_number"
+          :disabled
         />
         <input-component
           id="apartment_number"
@@ -75,6 +80,7 @@
           placeholder="Wpisz numer mieszkania"
           :errors="'apartment_number' in errors ? errors.apartment_number : undefined"
           v-model="form.apartment_number"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -85,6 +91,7 @@
           :options="propertyFormOptions.status"
           :errors="'status' in errors ? errors.status : undefined"
           v-model="form.status"
+          :disabled
         />
         <input-component
           id="rent_cost"
@@ -139,6 +146,7 @@
           :options="propertyFormOptions.has_balcony"
           :errors="'has_balcony' in errors ? errors.has_balcony : undefined"
           v-model="form.has_balcony"
+          :disabled
         />
         <select-component
           id="rent_by_rooms"
@@ -147,6 +155,7 @@
           :options="propertyFormOptions.rent_by_rooms"
           :errors="'rent_by_rooms' in errors ? errors.rent_by_rooms : undefined"
           v-model="form.rent_by_rooms"
+          :disabled
         />
       </div>
       <textarea-component
@@ -155,10 +164,11 @@
         placeholder="Dodaj opis"
         :errors="'description' in errors ? errors.description : undefined"
         v-model="form.description"
+        :disabled
       />
       <errors-component :errors="'message' in errors ? errors.message : undefined" />
       <div class="flex justify-center">
-        <generic-button type="submit" :is-sending="isSending">
+        <generic-button type="submit" :is-sending="isSending" :disabled>
           {{ props.mode === "add" ? "Utwórz nieruchomość" : "Zmień dane" }}
         </generic-button>
       </div>
@@ -222,6 +232,7 @@ const form = ref<typeof formTemplate | PropertyData>({ ...formTemplate });
 const owners = ref([]);
 
 const errors = ref<FormErrors<typeof formTemplate>>({});
+const disabled = ref(false);
 
 async function submitForm() {
   if (isSending.value) {
@@ -287,6 +298,7 @@ async function fetchPropertyData() {
 
   if (error) {
     errors.value = { message: "Nie udało się znaleźć danych nieruchomości" };
+    disabled.value = true;
     return;
   }
 
@@ -303,6 +315,7 @@ onMounted(async () => {
   const [id, error] = isRouteParamValidNumber("propertyId");
   if (error !== undefined) {
     errors.value = { message: error };
+    disabled.value = true;
     return;
   }
 

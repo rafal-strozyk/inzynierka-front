@@ -7,11 +7,11 @@ export function isRouteParamValidNumber(
 
   const routeParam = router.currentRoute.value.params[paramName];
   if (Array.isArray(routeParam) || routeParam === undefined) {
-    return [undefined, "Invalid property ID"];
+    return [undefined, "Invalid parameter."];
   }
   const parsedrouteParam = parseInt(routeParam);
   if (Number.isNaN(parsedrouteParam)) {
-    return [undefined, "Invalid property ID"];
+    return [undefined, "Invalid parameter."];
   }
   return [parsedrouteParam, undefined];
 }
@@ -23,7 +23,7 @@ export function isRouteParamValidString(
 
   const routeParam = router.currentRoute.value.params[paramName];
   if (Array.isArray(routeParam) || routeParam === undefined) {
-    return [undefined, "Invalid property ID"];
+    return [undefined, "Invalid parameter."];
   }
 
   return [routeParam, undefined];

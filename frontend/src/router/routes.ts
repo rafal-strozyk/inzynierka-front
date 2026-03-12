@@ -58,14 +58,6 @@ const routes = [
         component: () => import("@/views/MyDataView.vue"),
       },
       {
-        path: "users",
-        name: "Users",
-        component: () => import("@/views/UsersView.vue"),
-        meta: {
-          roles: ["admin"],
-        },
-      },
-      {
         path: "tenants",
         name: "Tenants",
         component: () => import("@/views/TenantsView.vue"),
@@ -82,6 +74,25 @@ const routes = [
         },
         meta: {
           roles: ["owner"],
+        },
+      },
+      {
+        path: "tenant/:tenantId/edit",
+        name: "EditTenant",
+        component: () => import("@/views/UserFormView.vue"),
+        props: {
+          mode: "edit",
+        },
+        meta: {
+          roles: ["owner"],
+        },
+      },
+      {
+        path: "users",
+        name: "Users",
+        component: () => import("@/views/UsersView.vue"),
+        meta: {
+          roles: ["admin"],
         },
       },
       {
