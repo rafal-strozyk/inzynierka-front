@@ -68,7 +68,7 @@
             <dl>
               <dt class="font-semibold text-gray-900 dark:text-white">Adres zameldowania</dt>
               <dd class="capitalize text-gray-500 dark:text-gray-400">
-                {{ userData.address_registered }}, {{ userData.city }}
+                {{ userData.address }}, {{ userData.postal_code }}
               </dd>
             </dl>
             <dl>
@@ -112,7 +112,7 @@ import { onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
-import { isRouteParamValidNumber } from "@/composables/route.ts";
+import { isRouteParamValidNumber } from "@/helpers/route.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
 
 const isLoading = ref(false);

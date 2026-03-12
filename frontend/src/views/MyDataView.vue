@@ -67,7 +67,7 @@
             <dl>
               <dt class="font-semibold text-gray-900 dark:text-white">Adres zameldowania</dt>
               <dd class="capitalize text-gray-500 dark:text-gray-400">
-                {{ user.address_registered }}, {{ user.city }}
+                {{ user.address }}, {{ user.postal_code }}
               </dd>
             </dl>
             <dl>

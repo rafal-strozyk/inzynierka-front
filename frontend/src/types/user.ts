@@ -2,20 +2,20 @@ import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 export const USER_ROLES = ["admin", "owner", "tenant"] as const;
 
 export type UserData = {
+  id: number;
+  assigned_to: string;
   name: string;
   surname: string;
   username: string;
   email: string;
   role: (typeof USER_ROLES)[number];
-  email_verified_at: string;
-  created_at: string;
-  updated_at: string;
+  password?: string;
   phone: string;
-  address_registered: string;
-  city: string;
+  address: string;
+  postal_code: string;
   birth_date: string;
   pesel: string;
-  // notes: string;
+  notes: string;
 };
 
 type TableUserDataKeys = "username" | "name" | "email" | "phone";
