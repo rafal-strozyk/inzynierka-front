@@ -74,6 +74,17 @@ const routes = [
         },
       },
       {
+        path: "tenant/add",
+        name: "AddTenant",
+        component: () => import("@/views/UserFormView.vue"),
+        props: {
+          mode: "add",
+        },
+        meta: {
+          roles: ["owner"],
+        },
+      },
+      {
         path: "user/:username",
         name: "User",
         component: () => import("@/views/UserView.vue"),

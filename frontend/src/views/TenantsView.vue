@@ -2,7 +2,7 @@
   <section class="max-w-7xl mx-auto">
     <div class="flex max-sm:flex-col justify-between items-center gap-4 mb-4">
       <h1 class="text-3xl font-bold mb-0">Najemcy</h1>
-      <generic-button :callback="() => router.push({ name: 'AddUser' })" :iconPath="UserIconSVG"
+      <generic-button :callback="() => router.push({ name: 'AddTenant' })" :iconPath="UserIconSVG"
         >Dodaj najemcę</generic-button
       >
     </div>
