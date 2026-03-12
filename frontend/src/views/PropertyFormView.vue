@@ -100,6 +100,7 @@
           placeholder="Wpisz czynsz"
           :errors="'rent_cost' in errors ? errors.rent_cost : undefined"
           v-model.number="form.rent_cost"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -110,6 +111,7 @@
           placeholder="Wpisz koszt mediów"
           :errors="'utilities_cost' in errors ? errors.utilities_cost : undefined"
           v-model.number="form.utilities_cost"
+          :disabled
         />
         <input-component
           id="additional_costs"
@@ -118,6 +120,7 @@
           placeholder="Wpisz dodatkowe koszta"
           :errors="'additional_costs' in errors ? errors.additional_costs : undefined"
           v-model.number="form.additional_costs"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">
@@ -128,6 +131,7 @@
           placeholder="Wpisz powierzchnię"
           :errors="'area_total' in errors ? errors.area_total : undefined"
           v-model.number="form.area_total"
+          :disabled
         />
         <input-component
           id="bathrooms_count"
@@ -136,6 +140,7 @@
           placeholder="Wpisz ilość łazienek"
           :errors="'bathrooms_count' in errors ? errors.bathrooms_count : undefined"
           v-model.number="form.bathrooms_count"
+          :disabled
         />
       </div>
       <div class="grid md:grid-cols-2 gap-4">

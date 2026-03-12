@@ -7,7 +7,7 @@
     :class="[
       buttonTypeStyling[props.variant],
       isSending ? 'pointer-events-none py-1.5' : 'py-2.5',
-      props.disabled ? 'opacity-75 cursor-not-allowed' : 'cursor-pointer',
+      props.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer',
     ]"
   >
     <template v-if="isSending">

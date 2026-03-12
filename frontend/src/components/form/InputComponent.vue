@@ -14,7 +14,7 @@
       :autocomplete
       v-model="model"
       class="appearance-none bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-      :class="{ 'opacity-65 hover:cursor-not-allowed': disabled }"
+      :class="{ 'opacity-50 hover:cursor-not-allowed': disabled }"
       :required
       :disabled
     />
