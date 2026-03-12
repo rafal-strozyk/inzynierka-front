@@ -26,7 +26,7 @@
       @submit.prevent="submitForm"
       class="w-full space-y-4 md:space-y-6 overflow-y-auto px-0.5 pb-1"
     >
-      <div v-if="isMyRole(['admin'])" class="flex max-md:flex-wrap justify-between gap-4">
+      <div v-if="isMyRole(['admin'])" class="grid md:grid-cols-2 gap-4">
         <select-component
           label="Właściciel nieruchomości"
           :options="owners"
@@ -35,7 +35,7 @@
           v-model="form.owner_id"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <input-component
           id="name"
           autocomplete="off"
@@ -45,7 +45,7 @@
           v-model="form.name"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <input-component
           id="city"
           label="Miasto"
@@ -61,7 +61,7 @@
           v-model="form.street"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <input-component
           id="street_number"
           label="Numer domu"
@@ -77,7 +77,7 @@
           v-model="form.apartment_number"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <select-component
           id="status"
           label="Status"
@@ -95,7 +95,7 @@
           v-model.number="form.rent_cost"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <input-component
           id="utilities_cost"
           inputmode="decimal"
@@ -113,7 +113,7 @@
           v-model.number="form.additional_costs"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <input-component
           id="area_total"
           inputmode="decimal"
@@ -131,7 +131,7 @@
           v-model.number="form.bathrooms_count"
         />
       </div>
-      <div class="flex max-md:flex-wrap justify-between gap-4">
+      <div class="grid md:grid-cols-2 gap-4">
         <select-component
           id="has_balcony"
           label="Czy posiada balkon"
@@ -184,7 +184,7 @@ import { handleFetchErrors } from "@/composables/form.ts";
 import TextareaComponent from "@/components/form/TextareaComponent.vue";
 import isMyRole from "@/helpers/is-my-role.ts";
 import GenericView from "@/views/GenericView.vue";
-import { isRouteParamValidNumber } from "@/composables/route.ts";
+import { isRouteParamValidNumber } from "@/helpers/route.ts";
 
 type PropertyFormProps = { mode: "add" | "edit" };
 
