@@ -18,7 +18,7 @@ export type UserData = {
   notes: string;
 };
 
-type TableUserDataKeys = "username" | "name" | "email" | "phone";
+type TableUserDataKeys = "id" | "name" | "email" | "phone";
 export type TableUserResponse = Pick<UserData, TableUserDataKeys | "role">;
 
 export type TableUserData = Pick<UserData, TableUserDataKeys> & {

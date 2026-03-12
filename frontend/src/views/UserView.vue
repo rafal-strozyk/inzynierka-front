@@ -112,7 +112,7 @@ import { onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
-import { isRouteParamValidNumber } from "@/helpers/route.ts";
+import { isRouteParamValidNumber, isRouteParamValidString } from "@/helpers/route.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
 
 const isLoading = ref(false);
@@ -130,7 +130,7 @@ async function fetchUserData() {
 
   const [response, error] = await catchAxiosError<{
     data: UserData;
-  }>(window.API.get(`/admin/user/${userId.value}`));
+  }>(window.API.get(`/admin/users/${userId.value}`));
 
   isLoading.value = false;
 

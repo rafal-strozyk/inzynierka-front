@@ -10,7 +10,7 @@
       v-model:queryParams="queryParams"
       :data
       :columns
-      identifier="username"
+      identifier="id"
       :actions
       :meta
       :is-loading
@@ -55,15 +55,15 @@ const columns = ref<ColumnData<TableUserData>[]>([
   },
 ] as const);
 
-const actions = ref<TableActions<TableUserData, "username">>([
+const actions = ref<TableActions<TableUserData, "id">>([
   [
     {
       type: "router-link",
       text: "Podgląd",
-      to: (username: TableUserData["username"]) => {
+      to: (userId: TableUserData["id"]) => {
         return {
           name: "User",
-          params: { username },
+          params: { userId },
         };
       },
     },
