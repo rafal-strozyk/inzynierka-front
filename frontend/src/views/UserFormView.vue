@@ -178,6 +178,7 @@ type UserFormProps = { mode: "add" | "edit" };
 const props = defineProps<UserFormProps>();
 
 const formTemplate = {
+  id: "",
   assigned_to: "",
   name: "",
   surname: "",
@@ -227,7 +228,7 @@ async function submitForm() {
   const [, error] = await catchAxiosError<unknown, FormErrorResponse<typeof formTemplate>>(
     props.mode === "add"
       ? window.API.post(endpoint, toFormData(form.value))
-      : window.API.put(`${endpoint}/${form.value.id}`, toFormData({})),
+      : window.API.put(`${endpoint}/${form.value.id}`, toFormData(form.value)),
   );
 
   if (error) {
