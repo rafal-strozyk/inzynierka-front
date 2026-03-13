@@ -30,6 +30,7 @@ import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
 import UserIconSVG from "@/assets/img/icons/users_white.svg";
+import type { TablePropertyData } from "@/types/properties.ts";
 
 const router = useRouter();
 const modalStore = useModalStore();
@@ -67,27 +68,16 @@ const actions = ref<TableActions<TableUserData, "id">>([
         };
       },
     },
-    // {
-    //   type: "button",
-    //   text: "Edytuj dane",
-    //   callbackFn: async (propertyData: TablePropertyData) => {
-    //     const [response, error] = await catchAxiosError<{
-    //       data: PropertyData;
-    //     }>(window.API.get(`/properties/${propertyData.id}`));
-    //
-    //     if (error) {
-    //       modalStore.setModal({
-    //         show: true,
-    //         type: "confirm",
-    //         status: "error",
-    //         title: "Wystąpił błąd",
-    //         body: "Nie udało się pobrać danych nieruchomości",
-    //       });
-    //       return;
-    //     }
-    //     editPropertyModal(response.data.data);
-    //   },
-    // },
+    {
+      type: "router-link",
+      text: "Edytuj dane",
+      to: (userId: TableUserData["id"]) => {
+        return {
+          name: "EditUser",
+          params: { userId: userId },
+        };
+      },
+    },
   ],
   // [
   //   {

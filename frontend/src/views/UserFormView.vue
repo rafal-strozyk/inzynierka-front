@@ -192,7 +192,7 @@ const formTemplate = {
   pesel: "",
 };
 
-const username = ref();
+const userId = ref();
 const endpoint = `/${isMyRole(["admin"]) ? "admin/users" : "owner/tenants"}`;
 
 const modalStore = useModalStore();
@@ -227,7 +227,7 @@ async function submitForm() {
   const [, error] = await catchAxiosError<unknown, FormErrorResponse<typeof formTemplate>>(
     props.mode === "add"
       ? window.API.post(endpoint, toFormData(form.value))
-      : window.API.put(`${endpoint}/${form.value.username}`, toFormData({})),
+      : window.API.put(`${endpoint}/${form.value.id}`, toFormData({})),
   );
 
   if (error) {
@@ -244,8 +244,8 @@ async function submitForm() {
     title: "Sukces",
     body:
       props.mode === "add"
-        ? "Nieruchomość została utworzona poprawnie."
-        : "Dane nieruchomości zostały zmienione poprawnie.",
+        ? `${isMyRole(["admin"]) ? "Użytkownik" : "Najemca"} został utworzony poprawnie.`
+        : `Dane ${isMyRole(["admin"]) ? "użytkownika" : "najemcy"} zostały zmienione poprawnie.`,
   });
 
   if (props.mode === "add") {
@@ -262,10 +262,9 @@ async function fetchUserData() {
 
   isLoading.value = true;
 
-  // TODO fetch user or tenant
   const [response, error] = await catchAxiosError<{
     data: UserData;
-  }>(window.API.get(`${endpoint}/${username.value}`));
+  }>(window.API.get(`${endpoint}/${userId.value}`));
 
   isLoading.value = false;
 
@@ -286,14 +285,14 @@ onMounted(async () => {
     return;
   }
 
-  const [usernameParam, error] = isRouteParamValidString("tenantId");
+  const [id, error] = isRouteParamValidString(isMyRole(["admin"]) ? "userId" : "tenantId");
   if (error !== undefined) {
     errors.value = { message: error };
     disabled.value = true;
     return;
   }
 
-  username.value = usernameParam;
+  userId.value = id;
   void fetchUserData();
 });
 </script>

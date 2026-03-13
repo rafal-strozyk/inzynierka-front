@@ -130,7 +130,7 @@ async function fetchUserData() {
 
   const [response, error] = await catchAxiosError<{
     data: UserData;
-  }>(window.API.get(`/admin/user/${userId.value}`));
+  }>(window.API.get(`/owner/tenants/${userId.value}`));
 
   isLoading.value = false;
 

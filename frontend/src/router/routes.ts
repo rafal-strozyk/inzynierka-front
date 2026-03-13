@@ -77,6 +77,14 @@ const routes = [
         },
       },
       {
+        path: "tenant/:tenantId",
+        name: "Tenant",
+        component: () => import("@/views/TenantView.vue"),
+        meta: {
+          roles: ["owner"],
+        },
+      },
+      {
         path: "tenant/:tenantId/edit",
         name: "EditTenant",
         component: () => import("@/views/UserFormView.vue"),
@@ -96,9 +104,31 @@ const routes = [
         },
       },
       {
+        path: "user/add",
+        name: "AddUser",
+        component: () => import("@/views/UserFormView.vue"),
+        props: {
+          mode: "add",
+        },
+        meta: {
+          roles: ["admin"],
+        },
+      },
+      {
         path: "user/:userId",
         name: "User",
         component: () => import("@/views/UserView.vue"),
+        meta: {
+          roles: ["admin"],
+        },
+      },
+      {
+        path: "user/:userId/edit",
+        name: "EditUser",
+        component: () => import("@/views/UserFormView.vue"),
+        props: {
+          mode: "edit",
+        },
         meta: {
           roles: ["admin"],
         },
