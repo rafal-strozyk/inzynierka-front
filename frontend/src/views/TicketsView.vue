@@ -9,15 +9,15 @@
         >Dodaj zgłoszenie</generic-button
       >
     </div>
-    <table-component
-      v-model:queryParams="queryParams"
-      :data
-      :columns
-      identifier="id"
-      :actions
-      :meta
-      :is-loading
-    />
+    <!--    <table-component-->
+    <!--      v-model:queryParams="queryParams"-->
+    <!--      :data-->
+    <!--      :columns-->
+    <!--      identifier="id"-->
+    <!--      :actions-->
+    <!--      :meta-->
+    <!--      :is-loading-->
+    <!--    />-->
   </section>
 </template>
 
@@ -53,50 +53,50 @@ const columns = ref<ColumnData<TableUserData>[]>([
   },
 ] as const);
 
-const actions = ref<TableActions<TableUserData>>([
-  [
-    {
-      type: "router-link",
-      text: "Podgląd",
-      to: (userId: TableUserData["id"]) => {
-        return {
-          name: "Tenant",
-          params: { userId },
-        };
-      },
-    },
-    // {
-    //   type: "button",
-    //   text: "Edytuj dane",
-    //   callbackFn: async (propertyData: TablePropertyData) => {
-    //     const [response, error] = await catchAxiosError<{
-    //       data: PropertyData;
-    //     }>(window.API.get(`/properties/${propertyData.id}`));
-    //
-    //     if (error) {
-    //       modalStore.setModal({
-    //         show: true,
-    //         type: "confirm",
-    //         status: "error",
-    //         title: "Wystąpił błąd",
-    //         body: "Nie udało się pobrać danych nieruchomości",
-    //       });
-    //       return;
-    //     }
-    //     editPropertyModal(response.data.data);
-    //   },
-    // },
-  ],
-  // [
-  //   {
-  //     type: "button",
-  //     text: "Usuń",
-  //     callbackFn: (propertyData: TablePropertyData) => {
-  //       deletePropertyModal(propertyData, fetchProperties);
-  //     },
-  //   },
-  // ],
-]);
+// const actions = ref<TableActions<TableUserData>>([
+//   [
+//     {
+//       type: "router-link",
+//       text: "Podgląd",
+//       to: (userId: TableUserData["id"]) => {
+//         return {
+//           name: "Tenant",
+//           params: { userId },
+//         };
+//       },
+//     },
+//     // {
+//     //   type: "button",
+//     //   text: "Edytuj dane",
+//     //   callbackFn: async (propertyData: TablePropertyData) => {
+//     //     const [response, error] = await catchAxiosError<{
+//     //       data: PropertyData;
+//     //     }>(window.API.get(`/properties/${propertyData.id}`));
+//     //
+//     //     if (error) {
+//     //       modalStore.setModal({
+//     //         show: true,
+//     //         type: "confirm",
+//     //         status: "error",
+//     //         title: "Wystąpił błąd",
+//     //         body: "Nie udało się pobrać danych nieruchomości",
+//     //       });
+//     //       return;
+//     //     }
+//     //     editPropertyModal(response.data.data);
+//     //   },
+//     // },
+//   ],
+//   // [
+//   //   {
+//   //     type: "button",
+//   //     text: "Usuń",
+//   //     callbackFn: (propertyData: TablePropertyData) => {
+//   //       deletePropertyModal(propertyData, fetchProperties);
+//   //     },
+//   //   },
+//   // ],
+// ]);
 
 const isLoading = ref(false);
 const bypassLoading = ref(false);
