@@ -1,9 +1,10 @@
 import { useModalStore } from "@/stores/modal.ts";
-import type { PropertyData } from "@/types/properties.ts";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
+import type { UserData } from "@/types/user.ts";
+import isMyRole from "@/helpers/is-my-role.ts";
 
-export function deletePropertyModal(
-  propertyData: Pick<PropertyData, "id" | "name">,
+export function deleteUserModal(
+  propertyData: Pick<UserData, "id" | "name">,
   callbackFn: () => unknown,
 ) {
   const modalStore = useModalStore();
@@ -11,8 +12,8 @@ export function deletePropertyModal(
   modalStore.setModal({
     type: "confirm",
     show: true,
-    title: "Usuwanie nieruchomości",
-    body: `Czy na pewno chcesz usunąć nieruchomość: ${propertyData.name}?`,
+    title: `Usuwanie ${isMyRole(["admin"]) ? "użytkownika" : "najemcy"}`,
+    body: `Czy na pewno chcesz usunąć ${isMyRole(["admin"]) ? "użytkownika" : "najemcę"}: ${propertyData.name}?`,
     callback: {
       variant: "danger",
       confirm: "Potwierdź",
@@ -27,7 +28,7 @@ export function deletePropertyModal(
             type: "confirm",
             status: "error",
             title: "Wystąpił błąd",
-            body: `Nie udało się usunąć nieruchomości: ${propertyData.name}.`,
+            body: `Nie udało się usunąć ${isMyRole(["admin"]) ? "użytkownika" : "najemcy"}: ${propertyData.name}.`,
           });
           return;
         }
@@ -37,7 +38,7 @@ export function deletePropertyModal(
           type: "confirm",
           status: "success",
           title: "Sukces",
-          body: `Nieruchgomość ${propertyData.name} została usunięta poprawnie.`,
+          body: `${isMyRole(["admin"]) ? "Użytkownik" : "Najemca"} ${propertyData.name} została usunięta poprawnie.`,
         });
 
         callbackFn();

@@ -24,16 +24,14 @@ import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRouter } from "vue-router";
 import { type ColumnData, type TableActions, type TableMetaData } from "@/types/table.ts";
-import { useModalStore } from "@/stores/modal.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
 import UserIconSVG from "@/assets/img/icons/users_white.svg";
-import type { TablePropertyData } from "@/types/properties.ts";
+import { deleteUserModal } from "@/composables/users.ts";
 
 const router = useRouter();
-const modalStore = useModalStore();
 
 const queryParams = ref(getTableQueryParams());
 
@@ -79,15 +77,15 @@ const actions = ref<TableActions<TableUserData, "id">>([
       },
     },
   ],
-  // [
-  //   {
-  //     type: "button",
-  //     text: "Usuń",
-  //     callbackFn: (propertyData: TablePropertyData) => {
-  //       deletePropertyModal(propertyData, fetchProperties);
-  //     },
-  //   },
-  // ],
+  [
+    {
+      type: "button",
+      text: "Usuń",
+      callbackFn: (userData: TableUserData) => {
+        deleteUserModal(userData, fetchUsers);
+      },
+    },
+  ],
 ]);
 
 const isLoading = ref(false);

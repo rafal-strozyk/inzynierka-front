@@ -10,7 +10,7 @@
       v-model:queryParams="queryParams"
       :data
       :columns
-      identifier="username"
+      identifier="id"
       :actions
       :meta
       :is-loading
@@ -24,15 +24,14 @@ import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRouter } from "vue-router";
 import { type ColumnData, type TableActions, type TableMetaData } from "@/types/table.ts";
-import { useModalStore } from "@/stores/modal.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
 import GenericButton from "@/components/form/GenericButton.vue";
 import UserIconSVG from "@/assets/img/icons/users_white.svg";
+import { deleteUserModal } from "@/composables/users.ts";
 
 const router = useRouter();
-const modalStore = useModalStore();
 
 const queryParams = ref(getTableQueryParams());
 
@@ -51,49 +50,38 @@ const columns = ref<ColumnData<TableUserData>[]>([
   },
 ] as const);
 
-const actions = ref<TableActions<TableUserData, "username">>([
+const actions = ref<TableActions<TableUserData, "id">>([
   [
     {
       type: "router-link",
       text: "Podgląd",
-      to: (username: TableUserData["username"]) => {
+      to: (userId: TableUserData["id"]) => {
         return {
-          name: "Tenant",
-          params: { username },
+          name: "User",
+          params: { userId },
         };
       },
     },
-    // {
-    //   type: "button",
-    //   text: "Edytuj dane",
-    //   callbackFn: async (propertyData: TablePropertyData) => {
-    //     const [response, error] = await catchAxiosError<{
-    //       data: PropertyData;
-    //     }>(window.API.get(`/properties/${propertyData.id}`));
-    //
-    //     if (error) {
-    //       modalStore.setModal({
-    //         show: true,
-    //         type: "confirm",
-    //         status: "error",
-    //         title: "Wystąpił błąd",
-    //         body: "Nie udało się pobrać danych nieruchomości",
-    //       });
-    //       return;
-    //     }
-    //     editPropertyModal(response.data.data);
-    //   },
-    // },
+    {
+      type: "router-link",
+      text: "Edytuj dane",
+      to: (userId: TableUserData["id"]) => {
+        return {
+          name: "EditUser",
+          params: { userId: userId },
+        };
+      },
+    },
   ],
-  // [
-  //   {
-  //     type: "button",
-  //     text: "Usuń",
-  //     callbackFn: (propertyData: TablePropertyData) => {
-  //       deletePropertyModal(propertyData, fetchProperties);
-  //     },
-  //   },
-  // ],
+  [
+    {
+      type: "button",
+      text: "Usuń",
+      callbackFn: (userData: TableUserData) => {
+        deleteUserModal(userData, fetchUsers);
+      },
+    },
+  ],
 ]);
 
 const isLoading = ref(false);

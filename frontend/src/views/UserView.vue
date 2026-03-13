@@ -85,22 +85,12 @@
             </dl>
           </div>
         </div>
-        <!--        <generic-button-->
-        <!--          :iconPath="EditIconSVG"-->
-        <!--          :callback="-->
-        <!--            () =>-->
-        <!--              modal.setModal({-->
-        <!--                show: true,-->
-        <!--                type: 'component',-->
-        <!--                component: {-->
-        <!--                  is: markRaw(ChangePasswordComponent),-->
-        <!--                  props: {},-->
-        <!--                },-->
-        <!--              })-->
-        <!--          "-->
-        <!--        >-->
-        <!--          Zmień hasło-->
-        <!--        </generic-button>-->
+        <generic-button
+          :iconPath="EditIconSVG"
+          :callback="() => router.push({ name: 'EditProperty' })"
+        >
+          Edytuj dane
+        </generic-button>
       </div>
     </div>
   </section>
@@ -112,9 +102,12 @@ import { onMounted, ref } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import type { UserData } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
-import { isRouteParamValidNumber, isRouteParamValidString } from "@/helpers/route.ts";
+import { isRouteParamValidNumber } from "@/helpers/route.ts";
 import EditIconSVG from "@/assets/img/icons/edit.svg";
+import GenericButton from "@/components/form/GenericButton.vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const isLoading = ref(false);
 const errors = ref();
 

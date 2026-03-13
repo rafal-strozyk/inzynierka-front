@@ -9,7 +9,15 @@
         >Dodaj zgłoszenie</generic-button
       >
     </div>
-    <table-component v-model:queryParams="queryParams" :data :columns :actions :meta :is-loading />
+    <table-component
+      v-model:queryParams="queryParams"
+      :data
+      :columns
+      identifier="id"
+      :actions
+      :meta
+      :is-loading
+    />
   </section>
 </template>
 
@@ -19,7 +27,6 @@ import { onMounted, ref, watch } from "vue";
 import catchAxiosError from "@/helpers/catch-axios-error.ts";
 import { useRouter } from "vue-router";
 import { type ColumnData, type TableActions, type TableMetaData } from "@/types/table.ts";
-import { useModalStore } from "@/stores/modal.ts";
 import { getTableQueryParams } from "@/composables/table.ts";
 import type { TableUserData, TableUserResponse } from "@/types/user.ts";
 import { ROLES_DICTIONARY } from "@/helpers/dictionary.ts";
@@ -28,7 +35,6 @@ import TicketIconSVG from "@/assets/img/icons/tickets_white.svg";
 import isMyRole from "@/helpers/is-my-role.ts";
 
 const router = useRouter();
-const modalStore = useModalStore();
 
 const queryParams = ref(getTableQueryParams());
 

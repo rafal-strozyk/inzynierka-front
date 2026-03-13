@@ -61,7 +61,7 @@
               v-else
               v-for="(row, row_index) in data"
               :key="row_index"
-              class="transition lg:border-b dark:border-gray-700 max-lg:bg-gray-100 lg:hover:bg-gray-100 dark:max-lg:bg-gray-700 dark:lg:hover:bg-gray-700 max-lg:block max-lg:rounded-lg max-lg:shadow-md max-lg:hover:shadow-2xl max-lg:hover:-translate-y-1.5"
+              class="transition lg:border-b dark:border-gray-700 max-lg:bg-gray-100 lg:hover:bg-gray-100 dark:max-lg:bg-gray-700 dark:lg:hover:bg-gray-600 max-lg:block max-lg:rounded-lg max-lg:shadow-md max-lg:hover:shadow-2xl max-lg:hover:-translate-y-1.5"
             >
               <th
                 scope="row"
